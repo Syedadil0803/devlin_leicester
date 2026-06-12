@@ -2099,6 +2099,10 @@
 
   <!-- Page Styles: Section Spacing Overrides -->
   <style>
+    html {
+      scroll-behavior: smooth;
+    }
+
     .map-section {
       padding-top: 0;
       padding-bottom: 32px;
@@ -2342,9 +2346,9 @@
       </div>
     </div>
   </div>
-  <div class="page">
+  <div class="page" id="top">
     <!-- Page Header and Swiper-->
-           <section class="cw-announcement-slot"></section>
+    <section class="cw-announcement-slot"></section>
     <section class="section swiper-custom-container-3 leicester-hero">
       <header class="section page-header" style="position: relative; z-index: 500;">
         <!-- RD Navbar-->
@@ -2370,27 +2374,22 @@
                   <!-- RD Navbar Brand-->
                   <!-- <div class="rd-navbar-brand"><a class="brand" href="./"><img class="brand-logo-dark" src="images/logo-default-360x98.png" alt="image" width="180" height="49"/></a></div> -->
                   <div class="rd-navbar-brand">
-                    <a class="brand" href="./"><img class="brand-logo-dark" src="images/logo-2.png" alt="devlin logo"
-                        width="180" height="49" /></a>
+                    <a class="brand js-silent-anchor" href="#top"><img class="brand-logo-dark" src="images/logo-2.png"
+                        alt="devlin logo" width="180" height="49" /></a>
                   </div>
                 </div>
                 <div class="rd-navbar-main-element">
                   <div class="rd-navbar-nav-wrap">
                     <!-- RD Navbar Nav-->
                     <ul class="rd-navbar-nav">
-                      <li class="rd-nav-item active">
-                        <a class="rd-nav-link" href="./">Home</a>
+                      <li class="rd-nav-item ">
+                        <a class="rd-nav-link js-silent-anchor" href="#work">Our Work</a>
                       </li>
                       <li class="rd-nav-item">
-                        <a class="rd-nav-link" href="#">Stories</a>
-                        <ul class="rd-menu rd-navbar-dropdown">
-                          <li class="rd-dropdown-item">
-                            <a class="rd-dropdown-link" href="blog.html">Blogs</a>
-                          </li>
-                          <li class="rd-dropdown-item">
-                            <a class="rd-dropdown-link" href="projects.html">Projects</a>
-                          </li>
-                        </ul>
+                        <a class="rd-nav-link" href="blog.html">Blogs</a>
+                      </li>
+                      <li class="rd-nav-item">
+                        <a class="rd-nav-link js-silent-anchor" href="#contact">Contacts</a>
                       </li>
                     </ul>
                   </div>
@@ -2770,7 +2769,7 @@
 
 
     <!-- section Step Into Comfort -->
-    <section class="section section-top-0 section-bottom-0 section-sm">
+    <section class="section section-top-0 section-md">
       <div class="service-journey-heading" style="padding: 80px 0 30px;">
         <div class="container">
           <div class="service-journey-heading-copy">
@@ -2836,8 +2835,6 @@
                 </div>
               </article>
             </div>
-
-
             <div class="row justify-content-center mx-auto" style="margin-top: 14px; max-width: 520px;"
               aria-label="Quick contact actions">
               <div class="col-12 col-sm-6 mb-3">
@@ -2863,9 +2860,36 @@
           </div>
         </div>
     </section>
+    <section class="section parallax-container" data-parallax-img="images/parallax-4.jpg">
+      <div class="parallax-content section-sm context-dark">
+        <div class="container">
+          <div class="text-center ">
+            <p class="quote-classic-text" style="font-size: 18px; color: rgba(255,255,255,0.9); margin-bottom: 16px;">As
+              part of Devlin Wholesale,
+              our Leicester showroom gives you access to the full range of flooring products and services the Devlin
+              family has to offer.</p>
+            <div class="row justify-content-center mx-auto" style="margin-top: 14px; max-width: 520px;"
+              aria-label="Quick contact actions">
+              <div class="col-12 col-sm-6 mb-3">
+                <a class="button button-sm button-icon button-primary d-block button-winona button-winona-flex"
+                  href="https://devlinwholesale.co.uk/products.html" target="_blank" aria-label="Call Devlin now">
+                  Explore Products
+                </a>
+              </div>
+              <div class="col-12 col-sm-6 mb-3">
+                <a class="button button-sm button-icon button-gray-3 d-block button-winona button-winona-flex"
+                  href="https://devlinwholesale.co.uk/services.html" target="_blank" aria-label="Call Devlin now">
+                  Explore Services
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <!-- Areas we Cover -->
-    <section class="section section-md bg-default section-bottom-0 coverage-section-card">
+    <section class="section section-md bg-default  coverage-section-card">
       <div class="container-fluid px-3 px-lg-0">
         <div class="row align-items-stretch mx-0">
           <div class="col-12 col-lg-6 order-1 order-lg-1 align-items-start px-3 pl-lg-5 pr-lg-0 mb-4 mb-lg-0">
@@ -2874,7 +2898,8 @@
                 <span class="wow slide-to-center reach-label" style="margin-left: 0;">Our Reach</span>
                 Serving All of Leicestershire
               </h1>
-              <p style="margin-bottom: 4px;">Our showroom is conveniently located to serve homes throughout Leicester and
+              <p style="margin-bottom: 4px;">Our showroom is conveniently located to serve homes throughout Leicester
+                and
                 the wider Leicestershire County.</p>
               <p>We offer expert flooring advice, luxury and affordable carpets, LVT, and
                 other quality flooring options, plus free professional measurements.</p>
@@ -2968,14 +2993,20 @@
                     <span class="icon fa-brands fa-whatsapp" style="color:#25D366;"></span>WhatsApp
                   </a>
                 </div>
-                <div class="col-12 col-md-4 mb-3">
-                  <a class="button button-sm button-icon button-blue-8 d-block text-center" href="contacts.html"
-                    style="width: 100%;">
-                    <span class="icon mdi mdi-chevron-right"></span>Contact Us
-                  </a>
-                </div>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="section parallax-container" data-parallax-img="images/parallax-1.jpg">
+      <div class="parallax-content section-sm context-dark">
+        <div class="container">
+          <div class="text-center quote-classic-text">
+            <p style="font-size: 18px; color: rgba(255,255,255,0.9); margin: 0;">Three stores. One family. A tradition
+              built on quality and trust &mdash; meet the story behind <a href="https://www.devlinwholesale.co.uk/"
+                target="_blank" rel="noopener noreferrer" style="color: #fff; text-decoration: underline;">Devlin
+                Wholesale &rarr;</a></p>
           </div>
         </div>
       </div>
@@ -3048,6 +3079,7 @@
     </div> -->
 
 
+    <span id="contact" style="position: relative; top: -120px;"></span>
     <section class="section section-top-0 section-bottom-0 bg-default">
       <div class="map-section map-section-flush container-fluid">
         <div class="row">
@@ -3115,6 +3147,7 @@
       </div>
     </section>
     <!-- Latest projects-->
+    <span id="work" style="position: relative; top: -120px;"></span>
     <section class="section section-md section-top-0 bg-default text-center latest-projects-section">
       <div class="container heading-bottom-30">
         <h4 class="wow fadeInRight">Latest projects</h4>
@@ -4212,16 +4245,17 @@
           <div class="col-sm-10 col-md-12 col-lg-3 col-xl-3">
             <div class="oh-desktop">
               <div class="inset-left-xl-20 wow slideInLeft">
-                <a class="brand" href="./" style="background-color: white; display: inline-block; padding: 4px;">
+                <a class="brand js-silent-anchor" href="#top"
+                  style="background-color: white; display: inline-block; padding: 4px;">
                   <img src="images/logo-2.png" alt="logo image" width="180" height="49"
                     style="background-color: white;" />
                 </a>
                 <p>Providing trustworthy flooring products and solutions.</p>
                 <ul class="footer-creative-list d-inline-block d-sm-block" style="margin-top: 22px;">
-                
+
                   <li><a href="projects.html">Projects</a></li>
                   <li><a href="blog.html">Blogs</a></li>
-             
+
                 </ul>
                 <!-- Rights-->
                 <p class="rights">
@@ -4245,6 +4279,20 @@
   <!-- Javascript-->
   <script src="js/core.min.js"></script>
   <script src="js/script.js"></script>
+  <script>
+    document.querySelectorAll(".js-silent-anchor").forEach(function (link) {
+      link.addEventListener("click", function (event) {
+        const target = document.querySelector(link.getAttribute("href"));
+
+        if (!target) return;
+
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        target.scrollIntoView({ behavior: "smooth" });
+        history.replaceState(null, "", window.location.pathname + window.location.search);
+      }, true);
+    });
+  </script>
   <!-- JavaScript to highlight current day -->
   <script>
     document.addEventListener("DOMContentLoaded", function () {
