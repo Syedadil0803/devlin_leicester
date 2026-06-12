@@ -97,10 +97,11 @@
 
 		// Page loader & Page transition
 		if (plugins.preloader.length && !isNoviBuilder) {
+			setTimeout(function () { plugins.preloader.addClass('loaded'); }, 1000);
 			pageTransition({
 				target: document.querySelector('.page'),
 				delay: 0,
-				duration: 500,
+				duration: 300,
 				classIn: 'fadeIn',
 				classOut: 'fadeOut',
 				classActive: 'animated',
