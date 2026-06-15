@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://devlinleicesterlvtflooring.co.uk/sitemap.xml
