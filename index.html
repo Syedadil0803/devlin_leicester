@@ -420,7 +420,7 @@
     .external-link-tooltip::before {
       content: attr(data-tooltip);
       position: absolute;
-      bottom: calc(100% + 10px);
+      top: calc(100% + 10px);
       left: 50%;
       transform: translateX(-50%) translateY(-5px);
       margin-bottom: 0;
@@ -448,12 +448,12 @@
     .external-link-tooltip::after {
       content: '';
       position: absolute;
-      bottom: calc(100% + 4px);
+      top: calc(100% + 4px);
       left: 50%;
       transform: translateX(-50%);
       margin-bottom: 0;
       border: 6px solid transparent;
-      border-top-color: #151515;
+      border-bottom-color: #151515;
       opacity: 0;
       visibility: hidden;
       transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
@@ -2409,7 +2409,7 @@
                         <a class="rd-nav-link" href="https://www.devlinwholesale.co.uk/" target="_blank" rel="noopener noreferrer"><span class="post-classic-time" style="font-size: 14px;">Visit Devlin Wholesale</span></a>
                       </li> -->
                        <li class="rd-nav-item">
-                        <a class="rd-nav-link js-silent-anchor" href="https://www.devlinwholesale.co.uk/" target="_blank" rel="noopener noreferrer" >Our Family ↗</a>
+                        <a class="rd-nav-link js-silent-anchor js-nav-tooltip" href="https://www.devlinwholesale.co.uk/" target="_blank" rel="noopener noreferrer" data-tooltip="You will be redirected to an affiliated website (Devlin Carpets - Lichfield)">Our Family ↗</a>
                       </li>
                     </ul>
                   </div>
@@ -4442,6 +4442,8 @@
       });
     });
   </script>
+  <!-- Nav external-link tooltip (shared, fixed-position so the header's overflow:hidden can't clip it) -->
+  <script src="js/nav-tooltip.js"></script>
 </body>
 
 </html>
