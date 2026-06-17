@@ -2969,13 +2969,63 @@
           <div class="col-12 col-lg-6 order-2 order-lg-2 d-flex align-items-start px-3 pr-lg-5 pl-lg-0">
             <div
               style="position: relative; overflow: hidden; width: 100%; min-height: clamp(320px, 48vw, 520px); height: 100%;">
+              <!-- GDPR: map held in data-src, not loaded until the visitor clicks. -->
               <iframe id="coverageMapIframe"
-                src="https://www.google.com/maps/d/embed?mid=1lp2VFv0eqXhxW_qIlQB0TCgEJOygnEI&ehbc=2E312F&noprof=1"
+                data-src="https://www.google.com/maps/d/embed?mid=1lp2VFv0eqXhxW_qIlQB0TCgEJOygnEI&ehbc=2E312F&noprof=1"
                 style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; pointer-events: none;"
                 frameborder="0" allowfullscreen loading="lazy"></iframe>
-              <button id="coverageMapToggleBtn" onclick="toggleCoverageMapInteraction()" class="coverage-map-button">
+              <button id="coverageMapToggleBtn" onclick="toggleCoverageMapInteraction()" class="coverage-map-button" style="display: none">
                 Enable Map Interaction
               </button>
+              <style>
+                #coverageMapConsent {
+                  position: absolute; inset: 0; z-index: 11;
+                  display: flex; flex-direction: column; align-items: center; justify-content: center;
+                  text-align: center; padding: 24px; cursor: pointer; overflow: hidden; border-radius: 6px;
+                }
+                #coverageMapConsent::before {
+                  content: ""; position: absolute; inset: -14px;
+                  background: url("images/preview-coverage.jpg") center/cover no-repeat;
+                  filter: blur(5px) saturate(1.05); transform: scale(1.07); z-index: 0;
+                }
+                #coverageMapConsent::after {
+                  content: ""; position: absolute; inset: 0; z-index: 1;
+                  background: linear-gradient(135deg, rgba(18,18,18,.55), rgba(18,18,18,.64));
+                  transition: background .2s ease;
+                }
+                #coverageMapConsent:hover::after { background: linear-gradient(135deg, rgba(18,18,18,.46), rgba(18,18,18,.56)); }
+                #coverageMapConsent > * { position: relative; z-index: 2; }
+                #coverageMapConsent .cmc-pin { width: 50px; height: 50px; margin-bottom: 14px; color: #fff;
+                  filter: drop-shadow(0 2px 6px rgba(0,0,0,.45)); }
+                #coverageMapConsent .cmc-title {
+                  font-family: "Roboto",-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+                  font-weight: 500; font-size: 22px; letter-spacing: .1em; text-transform: uppercase;
+                  color: #fff; margin-bottom: 8px; text-shadow: 0 1px 4px rgba(0,0,0,.45); }
+                #coverageMapConsent .cmc-note {
+                  font-family: "Roboto",-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+                  font-size: 13px; color: rgba(255,255,255,.85); max-width: 380px; line-height: 1.6;
+                  margin-bottom: 20px; text-shadow: 0 1px 3px rgba(0,0,0,.4); }
+                #coverageMapConsent .cmc-btn {
+                  display: inline-block;
+                  font-family: "Roboto",-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+                  font-weight: 900; font-size: 14px; line-height: 1.85; letter-spacing: .2em; text-transform: uppercase;
+                  background: #db2a19; color: #fff; border: none; border-radius: 4px; padding: 12px 38px;
+                  cursor: pointer; box-shadow: 0 4px 14px rgba(219,42,25,.28);
+                  transition: background .15s ease, transform .15s ease; }
+                #coverageMapConsent:hover .cmc-btn { background: #b9220f; transform: translateY(-1px); }
+              </style>
+              <div id="coverageMapConsent" onclick="loadCoverageMap()" role="button" tabindex="0"
+                aria-label="Load the coverage map">
+                <svg class="cmc-pin" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" />
+                </svg>
+                <div class="cmc-title">View our coverage area</div>
+                <div class="cmc-note">
+                  The map is provided by Google Maps and may set its own cookies. We don't load it
+                  &mdash; or send anything to Google &mdash; until you choose to.
+                </div>
+                <span class="cmc-btn">Load interactive map</span>
+              </div>
             </div>
           </div>
         </div>
@@ -4328,6 +4378,19 @@
   <!-- birminghum live blog -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
   <script>
+    // GDPR consent gate: load the coverage map only on click. Until then the
+    // iframe has no src, so Google is never contacted and no cookies are set.
+    function loadCoverageMap() {
+      const iframe = document.getElementById("coverageMapIframe");
+      const overlay = document.getElementById("coverageMapConsent");
+      const button = document.getElementById("coverageMapToggleBtn");
+      if (iframe && iframe.dataset.src && !iframe.getAttribute("src")) {
+        iframe.setAttribute("src", iframe.dataset.src);
+      }
+      if (overlay) overlay.style.display = "none";
+      if (button) button.style.display = "";
+    }
+
     function toggleCoverageMapInteraction() {
       const iframe = document.getElementById("coverageMapIframe");
       const button = document.getElementById("coverageMapToggleBtn");
