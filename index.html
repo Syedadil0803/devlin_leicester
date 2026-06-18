@@ -154,20 +154,20 @@
 
     .service-journey.is-visible .service-step:nth-child(1) .card-lite,
     .service-journey.is-visible .service-step:nth-child(1) .media {
-      -webkit-animation: slide-top-instant 0.75s ease-out 0.1s both;
-      animation: slide-top-instant 0.75s ease-out 0.1s both;
+      -webkit-animation: slide-top-instant 0.5s ease-out 0s both;
+      animation: slide-top-instant 0.5s ease-out 0s both;
     }
 
     .service-journey.is-visible .service-step:nth-child(2) .card-lite,
     .service-journey.is-visible .service-step:nth-child(2) .media {
-      -webkit-animation: slide-top 0.75s cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.45s both;
-      animation: slide-top 0.75s cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.45s both;
+      -webkit-animation: slide-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.07s both;
+      animation: slide-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.07s both;
     }
 
     .service-journey.is-visible .service-step:nth-child(3) .card-lite,
     .service-journey.is-visible .service-step:nth-child(3) .media {
-      -webkit-animation: slide-top 0.75s cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.8s both;
-      animation: slide-top 0.75s cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.8s both;
+      -webkit-animation: slide-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.14s both;
+      animation: slide-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.14s both;
     }
 
     @-webkit-keyframes slide-top {
@@ -2826,7 +2826,7 @@
                 <i class="fa-solid fa-store"></i>
               </div>
               <div class="media">
-                <img src="images/stores/LeicesterStoreImg.JPG" alt="Devlin showroom in Leicester" width="770"
+                <img src="images/stores/LeicesterStoreImg-card.jpg" alt="Devlin showroom in Leicester" width="770"
                   height="426" loading="lazy" decoding="async" draggable="false">
               </div>
             </div>
@@ -2973,10 +2973,10 @@
               <div class="slick-slider child-carousel" id="child-carousel-5" data-arrows="true"
                 data-for=".carousel-parent" data-items="4" data-sm-items="4" data-md-items="4" data-lg-items="4"
                 data-xl-items="4" data-slide-to-scroll="1">
-                <div class="item"><img class="img-circle" src="images/Team/team-head.jpg" alt="" width="83"
+                <div class="item"><img class="img-circle" src="images/Team/team-head.jpg" alt="Team Head" width="83"
                     height="83" />
                 </div>
-                <div class="item"><img class="img-circle" src="images/Team/team-8.jpg" alt="" width="83" height="83" />
+                <div class="item"><img class="img-circle" src="images/Team/team-8.jpg" alt="Team Member" width="83" height="83" />
                 </div>
               </div>
             </div>
@@ -3729,7 +3729,7 @@
               <div class="container">
                 <div class="row justify-content-center justify-content-md-between">
                   <div class="col-5 d-none d-md-block position-static">
-                    <div class="quote-classic-figure"><img src="images/clients-24-960x574.jpg" alt="" width="960"
+                    <div class="quote-classic-figure"><img src="images/clients-24-960x574.jpg" alt="Client Testimonial" width="960"
                         height="574" />
                     </div>
                   </div>
@@ -3776,7 +3776,7 @@
               <div class="container">
                 <div class="row justify-content-center justify-content-md-between">
                   <div class="col-5 d-none d-md-block position-static">
-                    <div class="quote-classic-figure"><img src="images/clients-24-960x574.jpg" alt="" width="960"
+                    <div class="quote-classic-figure"><img src="images/clients-24-960x574.jpg" alt="Client Testimonial" width="960"
                         height="574" />
                     </div>
                   </div>
@@ -3826,7 +3826,7 @@
               <div class="container">
                 <div class="row justify-content-center justify-content-md-between">
                   <div class="col-5 d-none d-md-block position-static">
-                    <div class="quote-classic-figure"><img src="images/clients-24-960x574.jpg" alt="" width="960"
+                    <div class="quote-classic-figure"><img src="images/clients-24-960x574.jpg" alt="Client Testimonial" width="960"
                         height="574" />
                     </div>
                   </div>
@@ -3873,7 +3873,7 @@
               <div class="container">
                 <div class="row justify-content-center justify-content-md-between">
                   <div class="col-5 d-none d-md-block position-static">
-                    <div class="quote-classic-figure"><img src="images/clients-24-960x574.jpg" alt="" width="960"
+                    <div class="quote-classic-figure"><img src="images/clients-24-960x574.jpg" alt="Client Testimonial" width="960"
                         height="574" />
                     </div>
                   </div>
@@ -3922,7 +3922,7 @@
               <div class="container">
                 <div class="row justify-content-center justify-content-md-between">
                   <div class="col-5 d-none d-md-block position-static">
-                    <div class="quote-classic-figure"><img src="images/clients-24-960x574.jpg" alt="" width="960"
+                    <div class="quote-classic-figure"><img src="images/clients-24-960x574.jpg" alt="Client Testimonial" width="960"
                         height="574" />
                     </div>
                   </div>
@@ -4494,14 +4494,14 @@
       const observer = new IntersectionObserver(
         function (entries) {
           entries.forEach(function (entry) {
-            if (entry.intersectionRatio >= 0.18) {
+            if (entry.intersectionRatio >= 0.08) {
               journeySection.classList.add('is-visible');
             } else if (entry.intersectionRatio === 0) {
               journeySection.classList.remove('is-visible');
             }
           });
         },
-        { threshold: [0, 0.18], rootMargin: "0px" }
+        { threshold: [0, 0.08], rootMargin: "0px 0px -8% 0px" }
       );
 
       observer.observe(journeySection);
