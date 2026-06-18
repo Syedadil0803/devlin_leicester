@@ -97,7 +97,7 @@
 
 		// Page loader & Page transition
 		if (plugins.preloader.length && !isNoviBuilder) {
-			setTimeout(function () { plugins.preloader.addClass('loaded'); }, 1000);
+			setTimeout(function () { plugins.preloader.addClass('loaded'); }, 200);
 			pageTransition({
 				target: document.querySelector('.page'),
 				delay: 0,
