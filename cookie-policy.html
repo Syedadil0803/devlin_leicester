@@ -16,8 +16,8 @@
     <meta charset="utf-8">
     <link rel="icon" href="images/favicon-100x100.png" type="image/x-icon">
     <!-- Stylesheets-->
-    <link rel="stylesheet" type="text/css"
-        href="//fonts.googleapis.com/css?family=Roboto:100,300,300i,400,500,600,700,900%7CRaleway:500">
+    <link rel="preload" href="fonts/roboto-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="css/local-fonts.css">
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/fonts.css">
     <link rel="stylesheet" href="css/style.css">
@@ -147,7 +147,7 @@
         }
     </style>
     <!-- Accordian footer -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="css/fontawesome-6.4.0-all.min.css" rel="stylesheet">
     <style>
         /* Remove white background from accordion buttons and add dropdown icons */
         .accordion-button {
@@ -450,12 +450,12 @@
         <section class="section section-lg bg-default text-md-left">
             <div class="container">
                 <h3>Cookie Policy</h3>
-                <p class="last-updated">Last updated: 16 June 2025</p>
+                <p class="last-updated">Last updated: 22 June 2026</p>
 
                 <div class="content-block">
-                    <p>This Cookie Policy explains how Devlin Wholesale uses cookies and similar technologies on our
-                        website. By using our site, you consent to the use of cookies as described in this policy —
-                        subject to your cookie preferences.</p>
+                    <p>This Cookie Policy explains how Devlin Wholesale uses cookies, local storage and similar
+                        technologies on our website. Strictly necessary storage may be used without consent. Optional
+                        technologies should only be used where you have made the relevant choice.</p>
                 </div>
 
                 <div class="content-block">
@@ -471,22 +471,23 @@
                     <h4>Types of Cookies We Use</h4>
 
                     <div class="cookie-type">1. Strictly Necessary Cookies</div>
-                    <p>These cookies are essential for the website to function correctly. They enable basic features
-                        like page navigation and access to secure areas of the website. These cookies do not store any
-                        personally identifiable information.</p>
+                    <p>We use browser storage to remember whether you accepted, declined or customised the cookie
+                        notice. This is necessary to honour and retain your privacy choice. It is not used for
+                        advertising or analytics.</p>
 
-                    <div class="cookie-type">2. Performance & Analytics Cookies</div>
-                    <p>We use <strong>Google Analytics</strong> to collect information about how visitors use our site.
-                        These cookies help us understand:</p>
-                    <ul class="bullet-list"></ul>
-                    <li>Which pages are most visited</li>
-                    <li>How users move around the site</li>
-                    <li>How long visitors stay on pages</li>
-                    </ul>
-                    <p>The data collected is aggregated and anonymous — it does not personally identify you. To learn
-                        more about how Google handles data, visit: <a class="a-class"
-                            href="https://policies.google.com/technologies/partner-sites"
-                            target="_blank">https://policies.google.com/technologies/partner-sites</a></p>
+                    <div class="cookie-type">2. Analytics Cookies</div>
+                    <p>We do not currently use Google Analytics or another website analytics service.</p>
+
+                    <div class="cookie-type">3. Functional Third-Party Content</div>
+                    <p>The website includes a virtual showroom supplied by <strong>Matterport</strong>. When the tour is
+                        loaded, your browser connects directly to Matterport. Matterport may receive your IP address,
+                        browser and device details, referring page and request time, and may use cookies or similar
+                        technologies. Matterport content is functional and is not a strictly necessary part of the
+                        website.</p>
+                    <p>The Google coverage map is held back until you select the option to load it. If you load the map,
+                        your browser connects to Google, which may receive similar technical data and use cookies or
+                        similar technologies.</p>
+
                 </div>
 
                 <div class="content-block">
@@ -669,7 +670,7 @@
         });
     </script>
     <!-- Javascript-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="js/vendor/bootstrap-5.3.0.bundle.min.js"></script>
   <!-- Nav external-link tooltip (shared, fixed-position so the header's overflow:hidden can't clip it) -->
   <script src="js/nav-tooltip.js"></script>
 <script src="js/cookie-consent.js"></script>

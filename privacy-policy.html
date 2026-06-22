@@ -19,8 +19,8 @@
   <meta charset="utf-8">
   <link rel="icon" href="images/favicon-100x100.png" type="image/x-icon">
   <!-- Stylesheets-->
-  <link rel="stylesheet" type="text/css"
-    href="//fonts.googleapis.com/css?family=Roboto:100,300,300i,400,500,600,700,900%7CRaleway:500">
+  <link rel="preload" href="fonts/roboto-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/local-fonts.css">
   <link rel="stylesheet" href="css/bootstrap.css">
   <link rel="stylesheet" href="css/fonts.css">
   <link rel="stylesheet" href="css/style.css">
@@ -150,7 +150,7 @@
     }
   </style>
   <!-- Accordian footer -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="css/fontawesome-6.4.0-all.min.css" rel="stylesheet">
   <style>
     /* Remove white background from accordion buttons and add dropdown icons */
     .accordion-button {
@@ -336,7 +336,7 @@
     <section class="section section-lg bg-default text-md-left">
       <div class="container">
         <h3>Privacy Policy</h3>
-        <p class="last-updated">Last updated: 16 June 2025</p>
+        <p class="last-updated">Last updated: 22 June 2026</p>
         <!-- Terms list-->
         <dl class="list-terms">
           <dt class="heading-6">Who We Are</dt>
@@ -352,7 +352,9 @@
             provide voluntarily. This can include: Your name, contact details such as email address or phone number,
             address details (if you provide them for quotations or service delivery), and any information you provide as
             part of your enquiry. We do not collect or store payment details via the website, as we do not currently
-            process online payments.</dd>
+            process online payments. When you access the website, our hosting provider and the third-party services
+            described below may also process technical information such as your IP address, browser and device type,
+            referring page, requested resource, and the date and time of the request.</dd>
 
           <dt class="heading-6">How We Use Your Information</dt>
           <dd>The personal information you provide may be used to: respond to your enquiries or requests for
@@ -368,10 +370,20 @@
             time by contacting us or using any unsubscribe link provided in our communications.</dd>
 
           <dt class="heading-6">Cookies and Analytics</dt>
-          <dd>We use cookies on our website to enhance user experience and to collect anonymous information about how
-            visitors use the site. This includes the use of Google Analytics, which helps us understand traffic
-            patterns, popular pages, and user behaviour. Cookies are small text files stored on your device. You can
-            control cookie settings through your browser and choose to disable them if you prefer.</dd>
+          <dd>We use local storage or similar browser storage to remember your cookie preferences. We do not currently
+            use Google Analytics or another website analytics service. Optional third-party content may use cookies or
+            similar technologies when it is loaded. Please see our Cookie Policy for details and available controls.</dd>
+
+          <dt class="heading-6">Third-Party Website Services</dt>
+          <dd>Our virtual showroom is provided by Matterport. Loading the Matterport tour connects your browser to
+            Matterport and may allow Matterport to process technical usage data and use cookies or similar technologies.
+            Our Google coverage map is not loaded until you choose to load it; once loaded, Google may process technical
+            usage data and use cookies or similar technologies. Third-party providers may process data outside the UK
+            under the safeguards described in their own privacy notices.
+            <br><br>
+            Links to Google, Facebook, Instagram, WhatsApp and other external websites do not contact those services
+            merely because the links appear on our page. If you follow a link, the destination provider will process
+            your visit under its own privacy policy.</dd>
 
           <dt class="heading-6">How We Store Your Information</dt>
           <dd>We store personal information provided to us through phone, email, or WhatsApp communications in a secure
@@ -539,7 +551,7 @@
     });
   </script>
   <!-- Javascript-->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  <script src="js/vendor/bootstrap-5.3.0.bundle.min.js"></script>
   <!-- Nav external-link tooltip (shared, fixed-position so the header's overflow:hidden can't clip it) -->
   <script src="js/nav-tooltip.js"></script>
 <script src="js/cookie-consent.js"></script>
