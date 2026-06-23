@@ -2976,7 +2976,7 @@
               <!-- GDPR: map held in data-src, not loaded until the visitor clicks. -->
               <iframe id="coverageMapIframe"
                 data-src="https://www.google.com/maps/d/embed?mid=1lp2VFv0eqXhxW_qIlQB0TCgEJOygnEI&ehbc=2E312F&noprof=1"
-                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; pointer-events: none;"
+                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"
                 frameborder="0" allowfullscreen loading="lazy"></iframe>
               <button id="coverageMapToggleBtn" onclick="toggleCoverageMapInteraction()" class="coverage-map-button" style="display: none">
                 Enable Map Interaction
@@ -3195,16 +3195,80 @@
           <p>Take a 3D tour of our Groby showroom and browse luxury carpets, hardwoods, and designer flooring.</p>
         </div>
       </div>
-      <div class="map-section map-section-flush  px-3 px-lg-0" style="padding: 0;">
+      <div class="map-section map-section-flush px-3 px-lg-0" style="padding: 0;">
         <div class="row">
           <div class="col-12">
-            <div class="map-container">
-              <iframe src="https://my.matterport.com/show/?m=hkLjQnC7Rv2" frameborder="0" allowfullscreen loading="lazy"
-                allow="autoplay; fullscreen; web-share; xr-spatial-tracking;"></iframe>
+            <div class="map-container" style="position: relative;">
+              <!-- GDPR: Matterport held in data-src, nothing loaded until visitor clicks -->
+              <iframe id="matterportIframe"
+                data-src="https://my.matterport.com/show/?m=hkLjQnC7Rv2&play=1"
+                frameborder="0" allowfullscreen loading="lazy"
+                allow="autoplay; fullscreen; web-share; xr-spatial-tracking;"
+                style="position: absolute; inset: 0; width: 100%; height: 100%; border: 0;"></iframe>
+              <style>
+                #matterportConsent {
+                  position: absolute; inset: 0; z-index: 11;
+                  display: flex; flex-direction: column; align-items: center; justify-content: center;
+                  text-align: center; padding: 24px; cursor: pointer; overflow: hidden; border-radius: 0;
+                }
+                #matterportConsent::before {
+                  content: ""; position: absolute; inset: -14px;
+                  background: url("images/stores/LeicesterStoreImg.JPG") center/cover no-repeat;
+                  filter: blur(5px) saturate(1.05); transform: scale(1.07); z-index: 0;
+                }
+                #matterportConsent::after {
+                  content: ""; position: absolute; inset: 0; z-index: 1;
+                  background: linear-gradient(135deg, rgba(18,18,18,.55), rgba(18,18,18,.64));
+                  transition: background .2s ease;
+                }
+                #matterportConsent:hover::after { background: linear-gradient(135deg, rgba(18,18,18,.46), rgba(18,18,18,.56)); }
+                #matterportConsent > * { position: relative; z-index: 2; }
+                #matterportConsent .cmc-pin { width: 50px; height: 50px; margin-bottom: 14px; color: #fff;
+                  filter: drop-shadow(0 2px 6px rgba(0,0,0,.45)); }
+                #matterportConsent .cmc-title {
+                  font-family: "Roboto",-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+                  font-weight: 500; font-size: 22px; letter-spacing: .1em; text-transform: uppercase;
+                  color: #fff; margin-bottom: 8px; text-shadow: 0 1px 4px rgba(0,0,0,.45); }
+                #matterportConsent .cmc-note {
+                  font-family: "Roboto",-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+                  font-size: 13px; color: rgba(255,255,255,.85); max-width: 380px; line-height: 1.6;
+                  margin-bottom: 20px; text-shadow: 0 1px 3px rgba(0,0,0,.4); }
+                #matterportConsent .cmc-btn {
+                  display: inline-block;
+                  font-family: "Roboto",-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+                  font-weight: 900; font-size: 14px; line-height: 1.85; letter-spacing: .2em; text-transform: uppercase;
+                  background: #db2a19; color: #fff; border: none; border-radius: 4px; padding: 12px 38px;
+                  cursor: pointer; box-shadow: 0 4px 14px rgba(219,42,25,.28);
+                  transition: background .15s ease, transform .15s ease; }
+                #matterportConsent:hover .cmc-btn { background: #b9220f; transform: translateY(-1px); }
+              </style>
+              <div id="matterportConsent" onclick="loadMatterport()" role="button" tabindex="0"
+                aria-label="Load the virtual showroom tour">
+                <!-- 3D cube / tour icon -->
+                <svg class="cmc-pin" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M21 16.5c0 .38-.21.71-.53.88l-7.9 4.44c-.16.09-.34.13-.53.13s-.37-.04-.53-.13l-7.9-4.44A.991.991 0 0 1 3 16.5v-9c0-.38.21-.71.53-.88l7.9-4.44c.32-.18.74-.18 1.06 0l7.9 4.44c.32.17.53.5.53.88v9zM12 4.15L6.04 7.5 12 10.85l5.96-3.35L12 4.15zM5 15.91l6 3.38v-6.71L5 9.21v6.7zm8 3.38 6-3.38V9.21l-6 3.37v6.71z"/>
+                </svg>
+                <div class="cmc-title">Explore Our Showroom Virtually</div>
+                <div class="cmc-note">
+                  This 3D tour is provided by Matterport and may set its own cookies. We don't load it
+                  &mdash; or contact Matterport &mdash; until you choose to.
+                </div>
+                <span class="cmc-btn">Launch 3D Tour</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
+      <script>
+        function loadMatterport() {
+          var iframe = document.getElementById('matterportIframe');
+          var consent = document.getElementById('matterportConsent');
+          if (iframe && iframe.dataset.src && !iframe.getAttribute('src')) {
+            iframe.setAttribute('src', iframe.dataset.src);
+          }
+          if (consent) consent.style.display = 'none';
+        }
+      </script>
     </section>
     <!-- Latest projects-->
     <span id="work" style="position: relative; top: -120px;"></span>
@@ -4377,12 +4441,10 @@
     function loadCoverageMap() {
       const iframe = document.getElementById("coverageMapIframe");
       const overlay = document.getElementById("coverageMapConsent");
-      const button = document.getElementById("coverageMapToggleBtn");
       if (iframe && iframe.dataset.src && !iframe.getAttribute("src")) {
         iframe.setAttribute("src", iframe.dataset.src);
       }
       if (overlay) overlay.style.display = "none";
-      if (button) button.style.display = "";
     }
 
     function toggleCoverageMapInteraction() {
