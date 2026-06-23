@@ -40,11 +40,30 @@ const DEFAULT_COOKIE_PREFERENCES = {
   performance: false,
 };
 
+const COOKIE_CATEGORY_AVAILABILITY = {
+  functional: true,
+  analytics: false,
+  performance: false,
+};
+
+function normalizeCookiePreferences(preferences = {}) {
+  return {
+    necessary: true,
+    functional:
+      COOKIE_CATEGORY_AVAILABILITY.functional && preferences.functional === true,
+    analytics:
+      COOKIE_CATEGORY_AVAILABILITY.analytics && preferences.analytics === true,
+    performance:
+      COOKIE_CATEGORY_AVAILABILITY.performance &&
+      preferences.performance === true,
+  };
+}
+
 function getCookiePreferences() {
   const prefs = getCookie("cookiePreferences");
   if (prefs) {
     try {
-      return JSON.parse(prefs);
+      return normalizeCookiePreferences(JSON.parse(prefs));
     } catch (e) {
       return null;
     }
@@ -53,7 +72,11 @@ function getCookiePreferences() {
 }
 
 function saveCookiePreferences(preferences, consentValue = "custom") {
-  setCookie("cookiePreferences", JSON.stringify(preferences), 365);
+  setCookie(
+    "cookiePreferences",
+    JSON.stringify(normalizeCookiePreferences(preferences)),
+    365,
+  );
   setCookie("cookieConsent", consentValue, 365);
 }
 
@@ -81,6 +104,26 @@ function hideCookieWidget() {
   document.body.style.overflow = "";
 }
 
+function disableUnavailableCookieControls() {
+  ["analyticsCookies", "performanceCookies"].forEach((name) => {
+    document
+      .querySelectorAll(`input[name="${name}"]`)
+      .forEach((input) => {
+        input.disabled = true;
+        input.closest("label").style.opacity = "0.55";
+        input.closest("label").style.cursor = "not-allowed";
+      });
+
+    const noOption = document.querySelector(
+      `input[name="${name}"][value="no"]`,
+    );
+
+    if (noOption) {
+      noOption.checked = true;
+    }
+  });
+}
+
 // Toggle category details
 function toggleCategory(id) {
   const details = document.getElementById(id);
@@ -100,9 +143,9 @@ function toggleCategory(id) {
 function acceptAllCookies() {
   const preferences = {
     necessary: true,
-    functional: true,
-    analytics: true,
-    performance: true,
+    functional: COOKIE_CATEGORY_AVAILABILITY.functional,
+    analytics: COOKIE_CATEGORY_AVAILABILITY.analytics,
+    performance: COOKIE_CATEGORY_AVAILABILITY.performance,
   };
 
   saveCookiePreferences(preferences, "all");
@@ -142,8 +185,12 @@ function savePreferences() {
   const preferences = {
     necessary: true, // Always true
     functional: functionalRadio ? functionalRadio.value === "yes" : false,
-    analytics: analyticsRadio ? analyticsRadio.value === "yes" : false,
-    performance: performanceRadio ? performanceRadio.value === "yes" : false,
+    analytics: COOKIE_CATEGORY_AVAILABILITY.analytics
+      ? analyticsRadio?.value === "yes"
+      : false,
+    performance: COOKIE_CATEGORY_AVAILABILITY.performance
+      ? performanceRadio?.value === "yes"
+      : false,
   };
 
   saveCookiePreferences(preferences);
@@ -212,7 +259,7 @@ function updateUIFromPreferences(preferences) {
     const analyticsNo = document.querySelector(
       'input[name="analyticsCookies"][value="no"]',
     );
-    if (preferences.analytics) {
+    if (preferences.analytics && COOKIE_CATEGORY_AVAILABILITY.analytics) {
       analyticsYes.checked = true;
     } else {
       analyticsNo.checked = true;
@@ -225,11 +272,13 @@ function updateUIFromPreferences(preferences) {
     const performanceNo = document.querySelector(
       'input[name="performanceCookies"][value="no"]',
     );
-    if (preferences.performance) {
+    if (preferences.performance && COOKIE_CATEGORY_AVAILABILITY.performance) {
       performanceYes.checked = true;
     } else {
       performanceNo.checked = true;
     }
+
+    disableUnavailableCookieControls();
   }
 }
 
@@ -259,6 +308,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const consent = getCookie("cookieConsent");
   const preferences = getCookiePreferences();
 
+  disableUnavailableCookieControls();
   updateUIFromPreferences(preferences || DEFAULT_COOKIE_PREFERENCES);
 
   // Show banner only if no consent decision has been made yet. A rejection is
