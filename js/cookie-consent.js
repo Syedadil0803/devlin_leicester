@@ -33,6 +33,13 @@ function getCookie(name) {
   return match ? decodeURIComponent(match[2]) : null;
 }
 
+const DEFAULT_COOKIE_PREFERENCES = {
+  necessary: true,
+  functional: false,
+  analytics: false,
+  performance: false,
+};
+
 function getCookiePreferences() {
   const prefs = getCookie("cookiePreferences");
   if (prefs) {
@@ -45,9 +52,9 @@ function getCookiePreferences() {
   return null;
 }
 
-function saveCookiePreferences(preferences) {
+function saveCookiePreferences(preferences, consentValue = "custom") {
   setCookie("cookiePreferences", JSON.stringify(preferences), 365);
-  setCookie("cookieConsent", "custom", 365);
+  setCookie("cookieConsent", consentValue, 365);
 }
 
 // Widget control functions
@@ -98,8 +105,8 @@ function acceptAllCookies() {
     performance: true,
   };
 
-  saveCookiePreferences(preferences);
-  setCookie("cookieConsent", "all", 365);
+  saveCookiePreferences(preferences, "all");
+  updateUIFromPreferences(preferences);
   hideCookieBanner();
   hideCookieWidget();
 
@@ -108,15 +115,10 @@ function acceptAllCookies() {
 }
 
 function rejectAllCookies() {
-  const preferences = {
-    necessary: true,
-    functional: false,
-    analytics: false,
-    performance: false,
-  };
+  const preferences = { ...DEFAULT_COOKIE_PREFERENCES };
 
-  saveCookiePreferences(preferences);
-  setCookie("cookieConsent", "necessary", 365);
+  saveCookiePreferences(preferences, "necessary");
+  updateUIFromPreferences(preferences);
   hideCookieBanner();
   hideCookieWidget();
 
@@ -242,7 +244,7 @@ function clearAllCookies() {
     .querySelectorAll('input[name="functionalCookies"][value="no"]')
     .forEach((el) => (el.checked = true));
   document
-    .querySelectorAll('input[name="analyticsCookies"][value="yes"]')
+    .querySelectorAll('input[name="analyticsCookies"][value="no"]')
     .forEach((el) => (el.checked = true));
   document
     .querySelectorAll('input[name="performanceCookies"][value="no"]')
@@ -255,17 +257,18 @@ function clearAllCookies() {
 // Initialize on page load
 document.addEventListener("DOMContentLoaded", function () {
   const consent = getCookie("cookieConsent");
+  const preferences = getCookiePreferences();
 
-  // Show banner if no decision has been made, or if the user previously declined.
-  // Only suppress the banner when they have actively accepted (all or custom).
-  if (!consent || consent === "necessary") {
+  updateUIFromPreferences(preferences || DEFAULT_COOKIE_PREFERENCES);
+
+  // Show banner only if no consent decision has been made yet. A rejection is
+  // still a valid saved decision; it should not keep prompting on every reload.
+  if (!consent) {
     setTimeout(() => {
       showCookieBanner();
     }, 400);
   } else {
-    const preferences = getCookiePreferences();
     if (preferences) {
-      updateUIFromPreferences(preferences);
       console.log("Loaded existing preferences", preferences);
       initializeServices(preferences);
     }
