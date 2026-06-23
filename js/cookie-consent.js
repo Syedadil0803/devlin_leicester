@@ -148,13 +148,16 @@ function acceptAllCookies() {
     performance: COOKIE_CATEGORY_AVAILABILITY.performance,
   };
 
+  // isFirstDecision = true if no prior consent cookie existed
+  const isFirstDecision = !getCookie("cookieConsent");
+
   saveCookiePreferences(preferences, "all");
   updateUIFromPreferences(preferences);
   hideCookieBanner();
   hideCookieWidget();
 
   console.log("All cookies accepted", preferences);
-  initializeServices(preferences);
+  initializeServices(preferences, isFirstDecision);
 }
 
 function rejectAllCookies() {
@@ -166,7 +169,7 @@ function rejectAllCookies() {
   hideCookieWidget();
 
   console.log("Only necessary cookies accepted", preferences);
-  initializeServices(preferences);
+  initializeServices(preferences, false);
 }
 
 // FIXED savePreferences function
@@ -198,37 +201,48 @@ function savePreferences() {
   hideCookieWidget();
 
   console.log("Custom preferences saved", preferences);
-  initializeServices(preferences);
+  initializeServices(preferences, false);
 
   // Show success message
   // alert("Cookie preferences saved successfully!");
 }
 
 // Initialize services based on cookie preferences
-function initializeServices(preferences) {
+function initializeServices(preferences, isFirstDecision) {
   console.log("Initializing services with preferences:", preferences);
 
   if (preferences.analytics) {
     console.log("✅ Analytics cookies enabled - initializing analytics");
-    // Initialize Google Analytics or other analytics
   } else {
     console.log("❌ Analytics cookies disabled");
   }
 
   if (preferences.functional) {
-    console.log(
-      "✅ Functional cookies enabled - initializing functional features",
-    );
-    // Initialize social media widgets, etc.
+    console.log("✅ Functional cookies enabled - initializing functional features");
+    if (isFirstDecision) {
+      // First-ever acceptance on a clean page — load embeds directly, no reload needed
+      if (typeof loadCoverageMap === "function") loadCoverageMap();
+      if (typeof loadMatterport === "function") loadMatterport();
+    } else {
+      // Preference changed mid-session — reload so page initialises cleanly
+      sessionStorage.setItem("dwConsentReload", "1");
+      window.location.reload();
+    }
   } else {
     console.log("❌ Functional cookies disabled");
+    // Reload only if embeds are already live in the DOM
+    var mapIframe = document.getElementById("coverageMapIframe");
+    var mpIframe  = document.getElementById("matterportIframe");
+    var eitherLoaded = (mapIframe && mapIframe.getAttribute("src")) ||
+                       (mpIframe  && mpIframe.getAttribute("src"));
+    if (eitherLoaded) {
+      sessionStorage.setItem("dwConsentReload", "1");
+      window.location.reload();
+    }
   }
 
   if (preferences.performance) {
-    console.log(
-      "✅ Performance cookies enabled - initializing performance monitoring",
-    );
-    // Initialize performance monitoring
+    console.log("✅ Performance cookies enabled - initializing performance monitoring");
   } else {
     console.log("❌ Performance cookies disabled");
   }
@@ -308,19 +322,34 @@ document.addEventListener("DOMContentLoaded", function () {
   const consent = getCookie("cookieConsent");
   const preferences = getCookiePreferences();
 
+  // Clear the one-shot reload flag immediately so we never loop
+  const justReloaded = sessionStorage.getItem("dwConsentReload");
+  sessionStorage.removeItem("dwConsentReload");
+
   disableUnavailableCookieControls();
   updateUIFromPreferences(preferences || DEFAULT_COOKIE_PREFERENCES);
 
-  // Show banner only if no consent decision has been made yet. A rejection is
-  // still a valid saved decision; it should not keep prompting on every reload.
-  if (!consent) {
-    setTimeout(() => {
-      showCookieBanner();
-    }, 400);
+  if (!consent || consent === "necessary") {
+    // No positive consent yet — show banner (unless we just reloaded after a
+    // reject/decline, in which case the banner will show after the 400ms delay
+    // but won't trigger another reload since initializeServices won't be called
+    // from DOMContentLoaded)
+    if (!justReloaded) {
+      setTimeout(() => {
+        const currentConsent = getCookie("cookieConsent");
+        if (!currentConsent || currentConsent === "necessary") {
+          showCookieBanner();
+        }
+      }, 400);
+    }
   } else {
+    // Positive consent exists — initialise services without triggering reload
     if (preferences) {
       console.log("Loaded existing preferences", preferences);
-      initializeServices(preferences);
+      if (preferences.functional) {
+        if (typeof loadCoverageMap === "function") loadCoverageMap();
+        if (typeof loadMatterport === "function") loadMatterport();
+      }
     }
   }
 

@@ -2976,7 +2976,7 @@
               <!-- GDPR: map held in data-src, not loaded until the visitor clicks. -->
               <iframe id="coverageMapIframe"
                 data-src="https://www.google.com/maps/d/embed?mid=1lp2VFv0eqXhxW_qIlQB0TCgEJOygnEI&ehbc=2E312F&noprof=1"
-                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"
+                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; pointer-events: none;"
                 frameborder="0" allowfullscreen loading="lazy"></iframe>
               <button id="coverageMapToggleBtn" onclick="toggleCoverageMapInteraction()" class="coverage-map-button" style="display: none">
                 Enable Map Interaction
@@ -3259,16 +3259,6 @@
           </div>
         </div>
       </div>
-      <script>
-        function loadMatterport() {
-          var iframe = document.getElementById('matterportIframe');
-          var consent = document.getElementById('matterportConsent');
-          if (iframe && iframe.dataset.src && !iframe.getAttribute('src')) {
-            iframe.setAttribute('src', iframe.dataset.src);
-          }
-          if (consent) consent.style.display = 'none';
-        }
-      </script>
     </section>
     <!-- Latest projects-->
     <span id="work" style="position: relative; top: -120px;"></span>
@@ -4441,10 +4431,21 @@
     function loadCoverageMap() {
       const iframe = document.getElementById("coverageMapIframe");
       const overlay = document.getElementById("coverageMapConsent");
+      const button = document.getElementById("coverageMapToggleBtn");
       if (iframe && iframe.dataset.src && !iframe.getAttribute("src")) {
         iframe.setAttribute("src", iframe.dataset.src);
       }
       if (overlay) overlay.style.display = "none";
+      if (button) button.style.display = "";
+    }
+
+    function loadMatterport() {
+      var iframe = document.getElementById('matterportIframe');
+      var consent = document.getElementById('matterportConsent');
+      if (iframe && iframe.dataset.src && !iframe.getAttribute('src')) {
+        iframe.setAttribute('src', iframe.dataset.src);
+      }
+      if (consent) consent.style.display = 'none';
     }
 
     function toggleCoverageMapInteraction() {
@@ -4460,6 +4461,10 @@
         button.textContent = "Enable Map Interaction";
       }
     }
+
+    // Auto-load Google Map and Matterport if functional cookies are accepted
+    // This is now handled by initializeServices() in cookie-consent.js which
+    // is called on DOMContentLoaded and on every preference change.
   </script>
 
   <!-- Initialize LightGallery for each project -->
