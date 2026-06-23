@@ -256,7 +256,9 @@ function clearAllCookies() {
 document.addEventListener("DOMContentLoaded", function () {
   const consent = getCookie("cookieConsent");
 
-  if (!consent) {
+  // Show banner if no decision has been made, or if the user previously declined.
+  // Only suppress the banner when they have actively accepted (all or custom).
+  if (!consent || consent === "necessary") {
     setTimeout(() => {
       showCookieBanner();
     }, 400);
