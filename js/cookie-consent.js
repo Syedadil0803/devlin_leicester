@@ -48,6 +48,8 @@ const COOKIE_CATEGORY_AVAILABILITY = {
   performance: false,
 };
 
+const COOKIE_CONSENT_EXPIRY_DAYS = 180;
+
 function normalizeCookiePreferences(preferences = {}) {
   return {
     necessary: true,
@@ -77,9 +79,9 @@ function saveCookiePreferences(preferences, consentValue = "custom") {
   setCookie(
     "cookiePreferences",
     JSON.stringify(normalizeCookiePreferences(preferences)),
-    365,
+    COOKIE_CONSENT_EXPIRY_DAYS,
   );
-  setCookie("cookieConsent", consentValue, 365);
+  setCookie("cookieConsent", consentValue, COOKIE_CONSENT_EXPIRY_DAYS);
 }
 
 // Widget control functions
