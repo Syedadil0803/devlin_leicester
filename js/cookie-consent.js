@@ -85,16 +85,23 @@ function saveCookiePreferences(preferences, consentValue = "custom") {
 // Widget control functions
 function showCookieBanner() {
   const banner = document.getElementById("cookieBanner");
+  if (!banner) return;
   banner.classList.add("show");
 }
 
 function hideCookieBanner() {
   const banner = document.getElementById("cookieBanner");
+  if (!banner) return;
   banner.classList.remove("show");
+}
+
+function hasCookieDecision() {
+  return Boolean(getCookie("cookieConsent"));
 }
 
 function showCookieWidget() {
   const widget = document.getElementById("cookieWidget");
+  if (!widget) return;
   widget.classList.add("show");
   hideCookieBanner();
   document.body.style.overflow = "hidden";
@@ -102,8 +109,13 @@ function showCookieWidget() {
 
 function hideCookieWidget() {
   const widget = document.getElementById("cookieWidget");
+  if (!widget) return;
   widget.classList.remove("show");
   document.body.style.overflow = "";
+
+  if (!hasCookieDecision()) {
+    showCookieBanner();
+  }
 }
 
 function disableUnavailableCookieControls() {
@@ -331,21 +343,19 @@ document.addEventListener("DOMContentLoaded", function () {
   disableUnavailableCookieControls();
   updateUIFromPreferences(preferences || DEFAULT_COOKIE_PREFERENCES);
 
-  if (!consent || consent === "necessary") {
-    // No positive consent yet — show banner (unless we just reloaded after a
-    // reject/decline, in which case the banner will show after the 400ms delay
-    // but won't trigger another reload since initializeServices won't be called
-    // from DOMContentLoaded)
+  if (!consent) {
+    // No decision yet — keep showing the banner until the visitor accepts,
+    // rejects, or saves preferences.
     if (!justReloaded) {
       setTimeout(() => {
         const currentConsent = getCookie("cookieConsent");
-        if (!currentConsent || currentConsent === "necessary") {
+        if (!currentConsent) {
           showCookieBanner();
         }
       }, 400);
     }
   } else {
-    // Positive consent exists — initialise services without triggering reload
+    // A saved decision exists — initialise services without triggering reload.
     if (preferences) {
       console.log("Loaded existing preferences", preferences);
       if (preferences.functional) {
