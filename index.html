@@ -2374,6 +2374,102 @@
   <div class="page" id="top">
     <!-- Page Header and Swiper-->
     <section class="cw-announcement-slot"></section>
+
+    <!-- Mobile-only welcome topbar (shown once per session on mobile) -->
+    <div id="leicesterWelcomeBanner" style="display:none;" role="status" aria-live="polite">
+      <span id="leicesterWelcomeMsg">Welcome — you are now on the dedicated Groby, Leicester showroom website, part of the Devlin Wholesale family.</span>
+      <button id="leicesterWelcomeClose" onclick="dismissLeicesterBanner()" aria-label="Close welcome banner">&times;</button>
+    </div>
+    <style>
+      #leicesterWelcomeBanner {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 99999;
+        background: #031e2b;
+        color: #fff;
+        font-size: 13px;
+        font-weight: 500;
+        line-height: 1.4;
+        padding: 10px 44px 10px 16px;
+        text-align: center;
+        box-shadow: 0 -2px 8px rgba(0,0,0,0.25);
+        transform: translateY(100%);
+        transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+      #leicesterWelcomeBanner.lw-visible {
+        transform: translateY(0);
+      }
+      #leicesterWelcomeClose {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: rgba(255,255,255,0.7);
+        font-size: 20px;
+        line-height: 1;
+        cursor: pointer;
+        padding: 4px 6px;
+      }
+      #leicesterWelcomeClose:hover { color: #fff; }
+      /* Desktop: never show */
+      @media (min-width: 992px) {
+        #leicesterWelcomeBanner { display: none !important; }
+      }
+    </style>
+    <script>
+      (function () {
+        // Only on mobile, only once per session
+        if (window.innerWidth >= 992) return;
+        if (sessionStorage.getItem('lwDismissed')) return;
+
+        function showWelcomeBanner() {
+          var banner = document.getElementById('leicesterWelcomeBanner');
+          if (!banner) return;
+          banner.style.display = '';
+          setTimeout(function () {
+            banner.classList.add('lw-visible');
+          }, 100);
+          var autoTimer = setTimeout(function () {
+            dismissLeicesterBanner();
+          }, 5100);
+          window._lwAutoTimer = autoTimer;
+        }
+
+        // If the cookie banner is visible, wait for it to be dismissed first
+        // to avoid overlap at the bottom. Check every 300ms.
+        function waitForCookieBannerGone() {
+          var cookieBanner = document.getElementById('cookieBanner');
+          if (!cookieBanner || !cookieBanner.classList.contains('show')) {
+            // Cookie banner not showing — show welcome after a short delay
+            setTimeout(showWelcomeBanner, 800);
+          } else {
+            setTimeout(waitForCookieBannerGone, 300);
+          }
+        }
+
+        // Start checking after DOM is ready
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', function () {
+            setTimeout(waitForCookieBannerGone, 500);
+          });
+        } else {
+          setTimeout(waitForCookieBannerGone, 500);
+        }
+      })();
+
+      function dismissLeicesterBanner() {
+        var banner = document.getElementById('leicesterWelcomeBanner');
+        if (!banner) return;
+        clearTimeout(window._lwAutoTimer);
+        banner.classList.remove('lw-visible');
+        sessionStorage.setItem('lwDismissed', '1');
+        setTimeout(function () { banner.style.display = 'none'; }, 380);
+      }
+    </script>
     <section class="section swiper-custom-container-3 leicester-hero">
       <header class="section page-header" style="position: relative; z-index: 500;">
         <!-- RD Navbar-->
