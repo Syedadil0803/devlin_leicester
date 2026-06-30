@@ -19313,3 +19313,131 @@ disabled look for disabled choices in the results dropdown
 		height: 70px;
 	}
 }
+
+/* ============================================================
+   Lazy image shimmer loader — global
+   Wraps any img[loading="lazy"] parent with a shimmer + spinner
+   while the image hasn't loaded yet. JS adds .img-loaded once done.
+   Excluded: .brand-logo-item, .rd-navbar-brand, nav images
+   ============================================================ */
+
+.img-loading {
+	position: relative;
+	overflow: hidden;
+	background: #f0f0f0;
+}
+
+/* Shimmer sweep */
+.img-loading::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	z-index: 10;
+	background: linear-gradient(
+		90deg,
+		#f0f0f0 0%,
+		#fafafa 40%,
+		#f0f0f0 80%
+	);
+	background-size: 400% 100%;
+	animation: img-shimmer 1.4s ease infinite;
+	opacity: 1;
+	transition: opacity 0.3s ease;
+}
+
+/* Spinner in the centre */
+.img-loading::after {
+	content: '';
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	z-index: 11;
+	width: 28px;
+	height: 28px;
+	margin: -14px 0 0 -14px;
+	border: 3px solid #ddd;
+	border-top-color: #999;
+	border-radius: 50%;
+	animation: img-spin 0.8s linear infinite;
+	opacity: 1;
+	transition: opacity 0.3s ease;
+}
+
+@keyframes img-shimmer {
+	0%   { background-position: 100% 0; }
+	100% { background-position: -100% 0; }
+}
+
+@keyframes img-spin {
+	to { transform: rotate(360deg); }
+}
+
+/* Image itself is invisible until loaded.
+   NOTE: do NOT set `transition` here — it would override the card's own
+   hover transition (e.g. transform/scale) and make hovers janky. The
+   load fade-in uses a one-shot animation instead, leaving `transition`
+   free for the site's hover effects. */
+.img-loading > img,
+.img-loading img {
+	opacity: 0;
+}
+
+/* Once loaded — fade shimmer + spinner out smoothly (no hard "blink"), fade image in */
+.img-loading.img-loaded::before,
+.img-loading.img-loaded::after {
+	opacity: 0;
+	pointer-events: none;
+}
+
+.img-loading.img-loaded > img,
+.img-loading.img-loaded img {
+	opacity: 1;
+	animation: img-fade-in 0.35s ease;
+}
+
+@keyframes img-fade-in {
+	from { opacity: 0; }
+	to   { opacity: 1; }
+}
+
+/* Logo / transparent images (brand carousel): spinner only, NO grey box */
+.clients-creative.img-loading,
+.clients-creative.img-loading::before {
+	background: transparent;
+}
+.clients-creative.img-loading::before {
+	display: none;
+}
+.clients-creative.img-loading::after {
+	width: 22px;
+	height: 22px;
+	margin: -11px 0 0 -11px;
+	border-width: 2px;
+}
+.clients-creative.img-loading.img-loaded::after {
+	opacity: 0;
+}
+
+/* Auto-wrapper span (added by JS site-wide) — a block positioning context for
+   the spinner. It must NOT impose size on the image: inline-block would
+   shrink-wrap and break the image's own `width:100%`/`object-fit` rules.
+   line-height:0 removes the inline-image descender gap. */
+span.img-loading--auto {
+	display: block;
+	width: 100%;
+	max-width: 100%;
+	line-height: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.img-loading::before,
+	.img-loading::after {
+		animation: none;
+	}
+	.img-loading::before {
+		background: #f0f0f0;
+	}
+	.img-loading::after {
+		display: none;
+	}
+}

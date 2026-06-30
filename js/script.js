@@ -1830,3 +1830,121 @@
 		}
 	});
 }());
+
+// ============================================================
+// Global image loader — shimmer + spinner, site-wide
+// Auto-wraps eligible content images in .img-loading (no HTML edits
+// needed per page), then marks .img-loaded once each image arrives.
+// Manual .img-loading wrappers in the HTML still work as-is.
+// Opt an image out with the data-no-loader attribute.
+// ============================================================
+(function () {
+	// Containers/images we must NOT touch — logos, nav/footer, sliders,
+	// parallax backgrounds, icons — wrapping these would break layout.
+	var SKIP = [
+		'.rd-navbar img', '.rd-navbar-brand img', '.navbar img', 'a.brand img',
+		'header img', 'footer img', '.page-footer img',
+		'.owl-carousel img', '.swiper img', '.swiper-slide img', '.slick-slider img',
+		'.parallax img', '.rd-parallax img', '.material-parallax img',
+		'[class*="icon"] img', '.ico'
+	];
+
+	function eligibleImg(img) {
+		if (img.__ldrSeen) return false;
+		if (img.closest('.img-loading')) return false;       // already handled (manual or auto)
+		if (img.hasAttribute('data-no-loader')) return false;
+		for (var i = 0; i < SKIP.length; i++) {
+			try { if (img.matches(SKIP[i])) return false; } catch (e) {}
+		}
+		// Skip tiny images (icons / inline logos)
+		var w = parseInt(img.getAttribute('width') || '0', 10);
+		var h = parseInt(img.getAttribute('height') || '0', 10);
+		if ((w && w < 60) || (h && h < 60)) return false;
+		// Skip absolutely positioned / hidden images (decorative, backgrounds)
+		var cs = window.getComputedStyle(img);
+		if (cs.position === 'absolute' || cs.position === 'fixed') return false;
+		if (cs.display === 'none') return false;
+		return true;
+	}
+
+	function wrapImg(img) {
+		var span = document.createElement('span');
+		span.className = 'img-loading img-loading--auto';
+		// Always block: inline-block would shrink-wrap the span and collapse
+		// images that rely on `width:100%` / object-fit (e.g. .media images).
+		span.style.display = 'block';
+		img.parentNode.insertBefore(span, img);
+		span.appendChild(img);
+		return span;
+	}
+
+	function autoWrap(root) {
+		var imgs = (root || document).querySelectorAll('img');
+		for (var i = 0; i < imgs.length; i++) {
+			var img = imgs[i];
+			if (eligibleImg(img)) {
+				img.__ldrSeen = true;
+				wrapImg(img);
+			}
+		}
+	}
+
+	function markLoaded(container) {
+		container.classList.add('img-loaded');
+	}
+
+	function process(container) {
+		// idempotent — expando properties are NOT copied by cloneNode,
+		// so Owl-cloned slides are treated as fresh and get handled.
+		if (container.__imgShimmerDone) return;
+		container.__imgShimmerDone = true;
+
+		var img = container.tagName === 'IMG' ? container : container.querySelector('img');
+		if (!img) { markLoaded(container); return; }
+
+		if (img.complete && img.naturalWidth > 0) {
+			markLoaded(container);
+		} else {
+			img.addEventListener('load', function () { markLoaded(container); }, { once: true });
+			img.addEventListener('error', function () { markLoaded(container); }, { once: true });
+		}
+	}
+
+	function scan(root) {
+		(root || document).querySelectorAll('.img-loading').forEach(process);
+	}
+
+	function init() {
+		autoWrap(document);
+		scan(document);
+
+		// Owl/Swiper carousels clone nodes AFTER init and other widgets inject
+		// images dynamically — watch the DOM so those get the loader too.
+		if (window.MutationObserver) {
+			var mo = new MutationObserver(function (muts) {
+				for (var i = 0; i < muts.length; i++) {
+					var added = muts[i].addedNodes;
+					for (var j = 0; j < added.length; j++) {
+						var n = added[j];
+						if (n.nodeType !== 1) continue;
+						if (n.classList && n.classList.contains('img-loading')) process(n);
+						if (n.querySelectorAll) {
+							autoWrap(n);
+							n.querySelectorAll('.img-loading').forEach(process);
+						}
+					}
+				}
+			});
+			mo.observe(document.body, { childList: true, subtree: true });
+		}
+	}
+
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', init);
+	} else {
+		init();
+	}
+
+	// Safety re-scan once everything (incl. late clones / cached images) is in.
+	window.addEventListener('load', function () { autoWrap(document); scan(document); });
+}());
