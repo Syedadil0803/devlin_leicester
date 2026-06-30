@@ -10,7 +10,7 @@
 - **Basic Styles:** Full-width bar, white background with subtle bottom shadow, flex layout with space-between, nav links in 16px font with hover underline effect, padding ~1rem vertical.
 
 ### Footer
-- Full-width footer at the bottom of every page containing copyright text, a small sitemap repeat of nav links, and optional social media icons.
+- Full-width footer at the bottom of every page containing copyright text, a small sitemap repeat of nav links and optional social media icons.
 - **Basic Styles:** Dark background (slate/navy), white/light gray text, centered content, padding ~2rem, links with reduced opacity hover effect.
 
 ---
@@ -21,15 +21,15 @@
 - Same global header component as described above. "Home" nav item is visually active/highlighted to indicate current page.
 
 ### Section 2: Hero
-- Full-width banner section occupying the viewport height with a large headline, a short subheadline tagline, and a primary call-to-action button (e.g., "Get Started" or "Learn More").
+- Full-width banner section occupying the viewport height with a large headline, a short subheadline tagline and a primary call-to-action button (e.g., "Get Started" or "Learn More").
 - **Basic Styles:** Centered text alignment, large bold headline (~48px), muted subheadline (~20px), prominent button with background color and rounded corners, optional background image or gradient overlay.
 
 ### Section 3: Features / Services Overview
-- Three-column grid showcasing the top 3 services or value propositions, each with an icon, a heading, and a one-line description.
+- Three-column grid showcasing the top 3 services or value propositions, each with an icon, a heading and a one-line description.
 - **Basic Styles:** White/light background, equal-width columns with gap spacing, icons sized ~48px, headings ~20px bold, descriptions ~16px regular, centered text per card.
 
 ### Section 4: Testimonials
-- A horizontal row or carousel of 2–3 customer testimonial cards, each containing a short quote, the customer name, and their role.
+- A horizontal row or carousel of 2–3 customer testimonial cards, each containing a short quote, the customer name and their role.
 - **Basic Styles:** Light gray background, card style with white background and subtle shadow, italic quote text, author name in bold below, padding ~1.5rem per card.
 
 ### Section 5: Call-to-Action (CTA) Banner
@@ -55,7 +55,7 @@
 - **Basic Styles:** Max-width container centered, text column ~55% width, image column ~45%, heading ~28px bold, body text ~16px with comfortable line height (~1.6), vertical gap between columns ~2rem.
 
 ### Section 4: Team Members
-- A grid of team member cards, each showing a profile photo, name, job title, and a short one-line bio.
+- A grid of team member cards, each showing a profile photo, name, job title and a short one-line bio.
 - **Basic Styles:** Three to four columns depending on screen size, circular profile photos (~120px), name ~18px bold, title ~14px muted color, card padding ~1rem, centered text per card.
 
 ### Section 5: Footer
@@ -73,11 +73,11 @@
 - **Basic Styles:** Same as Page 2 Section 2.
 
 ### Section 3: Services List
-- A vertical stack of service cards, each card containing a service icon, a service title, a 2–3 line description, and a "Learn More" link.
+- A vertical stack of service cards, each card containing a service icon, a service title, a 2–3 line description and a "Learn More" link.
 - **Basic Styles:** White background, each card has a light border or subtle shadow, icon ~40px aligned left, title ~22px bold, description ~16px, link in primary color with arrow icon, padding ~1.5rem per card, vertical gap ~1rem between cards.
 
 ### Section 4: Pricing / Plans (Optional)
-- A three-column pricing table showing different tiers (Basic, Standard, Premium) with plan names, prices, feature lists, and a "Choose Plan" button per tier.
+- A three-column pricing table showing different tiers (Basic, Standard, Premium) with plan names, prices, feature lists and a "Choose Plan" button per tier.
 - **Basic Styles:** Cards of equal height, top plan name highlighted with primary color background, price ~36px bold, feature list with checkmarks, button full-width at bottom of card, center column slightly elevated (popular/highlighted style).
 
 ### Section 5: Footer
@@ -95,7 +95,7 @@
 - **Basic Styles:** Same as Page 2 Section 2.
 
 ### Section 3: Contact Form
-- A form with fields for Name, Email, Subject (dropdown), and Message (textarea), plus a "Send Message" submit button.
+- A form with fields for Name, Email, Subject (dropdown) and Message (textarea), plus a "Send Message" submit button.
 - **Basic Styles:** Form container with max-width ~600px, labels above each field, input fields with full width, light border, rounded corners, padding ~0.75rem, textarea ~150px height, button full-width or aligned right, primary color background.
 
 ### Section 4: Contact Details + Map
