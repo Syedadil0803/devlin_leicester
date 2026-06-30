@@ -1846,7 +1846,9 @@
 		'header img', 'footer img', '.page-footer img',
 		'.owl-carousel img', '.swiper img', '.swiper-slide img', '.slick-slider img',
 		'.parallax img', '.rd-parallax img', '.material-parallax img',
-		'[class*="icon"] img', '.ico'
+		'[class*="icon"] img', '.ico',
+		'[data-lightgallery] img',
+		'.lg-outer img'
 	];
 
 	function eligibleImg(img) {

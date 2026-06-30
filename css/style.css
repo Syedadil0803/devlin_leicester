@@ -19429,6 +19429,13 @@ span.img-loading--auto {
 	line-height: 0;
 }
 
+/* When lightGallery is active, hide the Bootstrap modal so the
+   lightbox shows full-screen without the modal grid overlapping. */
+body.lg-on .modal,
+body.lg-on .modal-backdrop {
+	display: none !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
 	.img-loading::before,
 	.img-loading::after {
