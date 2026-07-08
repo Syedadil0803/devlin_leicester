@@ -3,6 +3,15 @@
    Drop this file + campaign-widgets.js into any project
    ============================================ */
 
+/* Font: use the OS system font — the SAME thing the admin tool renders the promo
+   preview with. The tool's Geist does not reliably load (next/font shows it
+   "unloaded" in-app), so it falls back to system-ui; meanwhile Google Fonts'
+   "Geist" is a DIFFERENT, wider cut. Loading Geist here made the widget render
+   ~1% wider than the tool and wrap text one word sooner. Matching the tool's
+   actual font (system-ui) makes wrapping identical and removes all font-load
+   flakiness. (For pixel-identical rendering on every visitor OS, self-host one
+   Geist .woff2 in BOTH the tool and widget — tracked as a follow-up.) */
+
 /* ---------- Announcement Bar (Marquee Ticker) ---------- */
 .cw-announcement-slot {
   height: var(--cw-bar-height, 0px);
@@ -16,7 +25,7 @@
   display: flex;
   align-items: center;
   height: 40px;
-  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   font-size: 14px;
   font-weight: 500;
   letter-spacing: 0.3px;
@@ -98,16 +107,48 @@ body.cw-has-announcement-bar.cw-should-offset-fixed .header-area {
 }
 
 /* ---------- Promo Card ---------- */
+/* Mirror Tailwind's global border-box (the tool relies on it). Without this the
+   widget's elements are content-box, so padding + min-height stack and e.g. the
+   button renders taller than the tool. Scoped to the card so the host page is
+   untouched. */
+.cw-promo-card,
+.cw-promo-card * {
+  box-sizing: border-box;
+}
+
 .cw-promo-card {
   position: fixed;
   z-index: 99998;
+  box-sizing: border-box;
   width: 400px;
   max-width: 90vw;
   min-width: 320px;
-  border-radius: 16px;
-  padding: 24px;
-  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
-  box-shadow: 
+  border-radius: 12px;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  /* Single neutral text base for the whole card — mirrors the admin tool, where
+     every field is `text-base font-normal` (16px / 400 / line-height 1.5) and
+     only the content's inline styles (and the button's semibold) deviate. Fields
+     inherit from here, so sizes/weights can't drift field-by-field again. */
+  font-size: 16px;
+  font-weight: 400;
+  /* Fixed 24px length, NOT unitless 1.5 — matches Tailwind `text-base`
+     (line-height:1.5rem=24px) which the tool uses. A unitless value would make
+     large inline words (e.g. a 25.6px title span) get a 38px line box and render
+     taller than the tool. A fixed length keeps every line at the tool's height. */
+  line-height: 24px;
+  /* Isolate the card's typography from the HOST SITE. Sites (like Leicester)
+     set global letter-spacing / word-spacing / text-transform that INHERIT into
+     the card, making every line wider than the admin tool and pushing text —
+     especially the timer — onto an extra line. Resetting to the tool's defaults
+     here guarantees the widget wraps exactly like the tool. WYSIWYG. */
+  letter-spacing: normal;
+  word-spacing: normal;
+  text-transform: none;
+  text-indent: 0;
+  font-style: normal;
+  font-variant: normal;
+  box-shadow:
     0 20px 60px rgba(0, 0, 0, 0.15),
     0 8px 20px rgba(0, 0, 0, 0.1),
     0 0 0 1px rgba(255, 255, 255, 0.08);
@@ -220,13 +261,13 @@ body.cw-has-announcement-bar.cw-should-offset-fixed .header-area {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 }
 
+/* Fields inherit the card's base (16px / 400 / 1.5). Each rule sets ONLY what the
+   tool overrides: spacing + the pill padding/radius. Tool source per field noted. */
 .cw-promo-card__title {
-  font-size: 22px;
-  margin: 0 0 6px 0;
-  letter-spacing: -0.3px;
-  line-height: 1.2;
+  /* tool: mb-1 px-2 py-1 rounded */
+  margin: 0 0 4px 0;
   padding: 4px 8px;
-  border-radius: 8px;
+  border-radius: 4px;
 }
 
 /* Allow inline styles to override */
@@ -235,12 +276,10 @@ body.cw-has-announcement-bar.cw-should-offset-fixed .header-area {
 }
 
 .cw-promo-card__subtitle {
-  font-size: 18px;
-  margin: 0 0 6px 0;
-  letter-spacing: -0.2px;
-  line-height: 1.3;
+  /* tool: mb-2 px-2 py-1 rounded */
+  margin: 0 0 8px 0;
   padding: 4px 8px;
-  border-radius: 6px;
+  border-radius: 4px;
 }
 
 /* Allow inline styles to override */
@@ -249,11 +288,10 @@ body.cw-has-announcement-bar.cw-should-offset-fixed .header-area {
 }
 
 .cw-promo-card__description {
-  font-size: 14px;
-  line-height: 1.5;
-  margin: 0 0 12px 0;
+  /* tool: mb-2 px-2 py-1 rounded */
+  margin: 0 0 8px 0;
   padding: 4px 8px;
-  border-radius: 6px;
+  border-radius: 4px;
 }
 
 /* Allow inline styles to override */
@@ -268,12 +306,17 @@ body.cw-has-announcement-bar.cw-should-offset-fixed .header-area {
 }
 
 .cw-promo-card__timer {
-  font-size: 14px;
-  margin: 0 0 12px 0;
-  padding: 6px 10px;
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.1);
+  /* tool: mb-4 px-2 py-1 rounded (inherits 16px/400; bg comes from dateStyle) */
+  margin: 0 0 16px 0;
+  padding: 4px 8px;
+  border-radius: 4px;
   text-align: center;
+  /* The admin tool guarantees the timer is ALWAYS one line (its editor reverts
+     any edit that would wrap). We match that: keep it on one line here, and
+     fitTimer() in the JS scales the font down a hair if the text is a touch wider
+     than the card (e.g. font-metric rounding at the boundary) so it never wraps
+     to two lines or spills off the edge. WYSIWYG with the tool. */
+  white-space: nowrap;
 }
 
 .cw-promo-card__btn-wrapper {
@@ -282,24 +325,30 @@ body.cw-has-announcement-bar.cw-should-offset-fixed .header-area {
 }
 
 .cw-promo-card__btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  /* tool: a plain block with text-align center (a contenteditable div). NOT a
+     flex container — flexing the button turns each inline <span> in a rich-text
+     label into a separate flex item, so a styled label splits into blocks laid
+     out side-by-side instead of flowing as one wrapping line of text. Block +
+     text-align keeps the label flowing exactly like the tool. */
+  display: inline-block;
+  text-align: center;
   width: auto;
-  padding: 10px 22px;
+  min-height: 40px;
+  padding: 8px 16px;
   border: none;
-  border-radius: 10px;
-  font-size: 14px;
+  border-radius: 8px;
+  font-size: 16px;
   font-weight: 600;
+  line-height: 24px;
   cursor: pointer;
-  letter-spacing: 0.3px;
+  letter-spacing: normal;
   transition: all 0.25s ease;
   text-decoration: none;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
 }
 
 .cw-promo-card__btn--full {
-  flex: 1;
+  display: block;
   width: 100%;
 }
 
@@ -359,9 +408,6 @@ body.cw-has-announcement-bar.cw-should-offset-fixed .header-area {
     padding: 20px;
   }
 
-  .cw-promo-card__title {
-    font-size: 20px;
-  }
 }
 
 /* Mobile */
@@ -383,19 +429,6 @@ body.cw-has-announcement-bar.cw-should-offset-fixed .header-area {
     top: auto !important;
     transform: none !important;
     padding: 18px;
-  }
-
-  .cw-promo-card__title {
-    font-size: 18px;
-  }
-
-  .cw-promo-card__description {
-    font-size: 13px;
-  }
-
-  .cw-promo-card__btn {
-    font-size: 13px;
-    padding: 9px 18px;
   }
 }
 

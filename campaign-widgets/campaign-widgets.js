@@ -106,7 +106,11 @@
     // Allow only safe tags and attributes
     var allowedTags = ['span', 'strong', 'em', 'b', 'i', 'u', 'br'];
     var allowedAttributes = ['style', 'class'];
-    var allowedStyles = ['font-size', 'color', 'font-weight', 'font-style', 'text-decoration', 'text-align', 'line-height'];
+    // Keep the inline typography the admin editor actually supports. NOTE:
+    // `letter-spacing` is intentionally NOT here — the tool has no letter-spacing
+    // control, so it's not a real styling concept; the tool's preview now strips
+    // it too, so both render plain and stay WYSIWYG.
+    var allowedStyles = ['font-size', 'color', 'font-weight', 'font-style', 'text-decoration', 'text-align', 'line-height', 'text-transform', 'vertical-align'];
     
     function sanitizeNode(node) {
       if (node.nodeType === 3) return node; // Text node - safe
@@ -342,6 +346,18 @@
 
   // ---- Promo Card ----
 
+  // The admin editor stores inline font sizes as `rem` (e.g. 0.75rem, 1.6rem).
+  // `rem` resolves against the SITE's root font-size, which may not be the 16px
+  // the tool measured/rendered with — so the same content can render at different
+  // sizes on the site. Convert rem→px at 16px base so the widget matches the tool
+  // regardless of the host page's root font-size.
+  function normalizeRemToPx(html) {
+    if (!html) return html;
+    return String(html).replace(/font-size\s*:\s*([\d.]+)\s*rem/gi, function (_m, n) {
+      return 'font-size:' + (parseFloat(n) * 16) + 'px';
+    });
+  }
+
   function renderPromoCard(config) {
     if (!shouldShow(config)) return;
 
@@ -351,14 +367,19 @@
     // Timer interval reference for cleanup (declare at function scope)
     var timerInterval = null;
 
-    // Build the card
+    // Build the card. Respect the admin's adjustable card width (config.cardWidth,
+    // e.g. 400–440); the CSS width is only a fallback when it's not set.
+    const cardStyle = {
+      background: getBackgroundStyle(style.background) || '#1f2937',
+      color: style.textColor || '#ffffff',
+    };
+    if (config.cardWidth) {
+      cardStyle.width = config.cardWidth + 'px';
+    }
     const card = createElement('div', {
       className: 'cw-promo-card cw-promo-card--' + position,
       id: 'cw-promo-card',
-      style: {
-        background: getBackgroundStyle(style.background) || '#1f2937',
-        color: style.textColor || '#ffffff',
-      },
+      style: cardStyle,
     });
 
     // Shimmer effect
@@ -392,11 +413,11 @@
         style: {
           background: getBackgroundStyle(titleStyle.background) || 'transparent',
           color: titleStyle.textColor || style.textColor || '#ffffff',
-          textAlign: titleStyle.textAlign || 'left',
-          fontWeight: titleStyle.fontWeight || '600',
+          textAlign: titleStyle.textAlign || 'center',
+          fontWeight: titleStyle.fontWeight || '400',
         },
       });
-      titleElement.innerHTML = sanitizeHTML(config.title);
+      titleElement.innerHTML = normalizeRemToPx(sanitizeHTML(config.title));
       card.appendChild(titleElement);
     }
 
@@ -408,11 +429,11 @@
         style: {
           background: getBackgroundStyle(subheadingStyle.background) || 'transparent',
           color: subheadingStyle.textColor || style.textColor || '#ffffff',
-          textAlign: subheadingStyle.textAlign || 'left',
-          fontWeight: subheadingStyle.fontWeight || '500',
+          textAlign: subheadingStyle.textAlign || 'center',
+          fontWeight: subheadingStyle.fontWeight || '400',
         },
       });
-      subtitleElement.innerHTML = sanitizeHTML(config.subtitle);
+      subtitleElement.innerHTML = normalizeRemToPx(sanitizeHTML(config.subtitle));
       card.appendChild(subtitleElement);
     }
 
@@ -428,7 +449,7 @@
           fontWeight: descriptionStyle.fontWeight || '400',
         },
       });
-      descriptionElement.innerHTML = sanitizeHTML(config.description);
+      descriptionElement.innerHTML = normalizeRemToPx(sanitizeHTML(config.description));
       card.appendChild(descriptionElement);
     }
 
@@ -440,68 +461,111 @@
           background: getBackgroundStyle(style.dateStyle?.background) || 'transparent',
           color: style.dateStyle?.textColor || style.textColor || '#ffffff',
           textAlign: style.dateStyle?.textAlign || 'center',
-          fontWeight: style.dateStyle?.fontWeight || '500',
+          fontWeight: style.dateStyle?.fontWeight || '400',
         },
       });
-      
+
       // Sanitize timer template once
-      const formattedTemplate = sanitizeHTML(config.timerText);
+      const formattedTemplate = normalizeRemToPx(sanitizeHTML(config.timerText));
       const timerText = createElement('span', {});
       timerContainer.appendChild(timerText);
       card.appendChild(timerContainer);
       
-      // Function to update timer display
-      function updateTimer() {
-        const now = new Date();
-        const endTime = new Date(config.endDate + 'T23:59:59');
-        if (endTime > now) {
-          const diff = endTime - now;
-          const hours = Math.floor(diff / (1000 * 60 * 60));
-          const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-          const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-          
-          // Update the time values in the formatted template
-          let updatedText = formattedTemplate;
-          
-          // Support both old format {h} {mm} {ss} and new format hh mm ss
-          updatedText = updatedText.replace(/\{h\}/g, hours);
-          updatedText = updatedText.replace(/\{mm\}/g, minutes.toString().padStart(2, '0'));
-          updatedText = updatedText.replace(/\{ss\}/g, seconds.toString().padStart(2, '0'));
-          
-          // Also support hh, mm, ss (without curly braces) - add h, m, s suffixes by default
-          updatedText = updatedText.replace(/\bhh\b/g, hours.toString().padStart(2, '0') + 'h');
-          updatedText = updatedText.replace(/\bmm\b/g, minutes.toString().padStart(2, '0') + 'm');
-          updatedText = updatedText.replace(/\bss\b/g, seconds.toString().padStart(2, '0') + 's');
-          
-          // Only add colons with spacing if they don't already exist in the template
-          // Check if colons are already present between closing and opening tags
-          if (!(/(<\/[^>]+>)\s*:\s*(<[^>]+>)/.test(updatedText))) {
-            // Add colons with equal spacing (only if h/m/s units are present and no colons exist)
-            updatedText = updatedText.replace(/(\d+h)(<\/[^>]+>)\s*/gi, '$1 : $2');
-            updatedText = updatedText.replace(/(\d+m)(<\/[^>]+>)\s*/gi, '$1 : $2');
-          }
-          
-          timerText.innerHTML = updatedText;
+      // Remaining time — mirrors the admin's calculateTimeRemaining (a date-only
+      // endDate counts down to LOCAL end-of-day 23:59:59).
+      function getRemaining() {
+        var ed = config.endDate || '';
+        var end;
+        if (/^\d{4}-\d{2}-\d{2}$/.test(ed)) {
+          var p = ed.split('-');
+          end = new Date(+p[0], +p[1] - 1, +p[2], 23, 59, 59, 999);
         } else {
-          // Timer expired - clear interval and optionally hide card
-          if (timerInterval) {
-            clearInterval(timerInterval);
-            timerInterval = null;
-          }
+          end = new Date(ed);
+        }
+        var diff = end.getTime() - Date.now();
+        if (isNaN(diff) || diff <= 0) return { days: 0, hours: 0, minutes: 0, seconds: 0, done: true };
+        return {
+          days: Math.floor(diff / 86400000),
+          hours: Math.floor((diff % 86400000) / 3600000),
+          minutes: Math.floor((diff % 3600000) / 60000),
+          seconds: Math.floor((diff % 60000) / 1000),
+          done: false
+        };
+      }
+
+      function pad(n, w) { n = String(n); while (n.length < w) n = '0' + n; return n; }
+
+      // Expand the timer template — matches the admin's timerUtils:
+      //  {timer}  → "D days : H hours : M mins"
+      //  tokens   → {ddd}{dd}{d} {hhh}{hh}{h} {mmm}{mm}{m} {sss}{ss}{s}
+      // When no day token is used, days roll up into hours (like formatTimerText).
+      function fillTimer(tpl, v) {
+        // Wrap the {timer} countdown block in a nowrap span so "D days : H hours :
+        // M mins" never breaks mid-countdown when the surrounding text wraps —
+        // mirrors the tool's nowrap TimerChipNode.
+        var chip = '<span class="cw-timer-value">' + v.days + ' days : ' + v.hours + ' hours : ' + v.minutes + ' mins</span>';
+        var out = tpl.split('{timer}').join(chip);
+        var hasDayTok = /\{ddd\}|\{dd\}|\{d\}/.test(out);
+        var dh = hasDayTok ? v.hours : (v.days * 24 + v.hours);
+        return out
+          .replace(/\{ddd\}/g, pad(v.days, 3)).replace(/\{dd\}/g, pad(v.days, 2)).replace(/\{d\}/g, String(v.days))
+          .replace(/\{hhh\}/g, pad(dh, 3)).replace(/\{hh\}/g, pad(dh, 2)).replace(/\{h\}/g, String(dh))
+          .replace(/\{mmm\}/g, pad(v.minutes, 3)).replace(/\{mm\}/g, pad(v.minutes, 2)).replace(/\{m\}/g, String(v.minutes))
+          .replace(/\{sss\}/g, pad(v.seconds, 3)).replace(/\{ss\}/g, pad(v.seconds, 2)).replace(/\{s\}/g, String(v.seconds));
+      }
+
+      // Shrink the timer font just enough to keep it on ONE line, matching the
+      // tool (which never lets the timer wrap). Only kicks in when the text is
+      // slightly wider than the card interior — a font-metric boundary case —
+      // so in the normal case nothing changes and it renders at the full 16px.
+      function fitTimer() {
+        if (!timerContainer.clientWidth) return; // not laid out yet
+        timerText.style.fontSize = ''; // reset so we measure at the base size
+        var cs = window.getComputedStyle(timerContainer);
+        var avail = timerContainer.clientWidth
+          - parseFloat(cs.paddingLeft || '0')
+          - parseFloat(cs.paddingRight || '0');
+        // getBoundingClientRect works for an inline span (scrollWidth does not).
+        var textW = timerText.getBoundingClientRect().width;
+        if (avail > 0 && textW > avail) {
+          // Base size is 16px (inherited from the card). Scale down to fit,
+          // with a sensible floor so it never becomes unreadable.
+          var size = Math.max(11, Math.floor(16 * (avail / textW) * 10) / 10);
+          timerText.style.fontSize = size + 'px';
         }
       }
-      
+
+      function updateTimer() {
+        var v = getRemaining();
+        timerText.innerHTML = fillTimer(formattedTemplate, v);
+        fitTimer();
+        if (v.done && timerInterval) {
+          clearInterval(timerInterval);
+          timerInterval = null;
+        }
+      }
+
       // Render immediately on first load to prevent layout shift
       updateTimer();
-      
+      // Fit once the card is actually in the layout, and again once Geist loads
+      // (font swap changes text width).
+      if (typeof requestAnimationFrame !== 'undefined') {
+        requestAnimationFrame(function () { requestAnimationFrame(fitTimer); });
+      }
+      if (typeof document !== 'undefined' && document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(fitTimer);
+      }
+
       // Then update every second
       timerInterval = setInterval(updateTimer, 1000);
     }
 
-    // Button
-    if (config.showButton && config.buttonUrl) {
+    // Button — render whenever enabled and there's text. Only make it a real
+    // link when a destination URL exists; the "text" CTA type has no URL by
+    // design, so it renders as a styled, non-clickable button.
+    if (config.showButton && (config.buttonText || config.buttonUrl)) {
       const buttonStyle = style.buttonStyle || {};
-      
+
       // Create button wrapper for alignment control
       const buttonWrapper = createElement('div', {
         className: 'cw-promo-card__btn-wrapper',
@@ -511,18 +575,30 @@
           width: '100%',
         }
       });
-      
-      const btn = createElement('a', {
+
+      const btnAttrs = {
         className: 'cw-promo-card__btn' + (config.buttonFullWidth ? ' cw-promo-card__btn--full' : ''),
-        href: config.buttonUrl,
         style: {
           background: getBackgroundStyle(buttonStyle.background) || style.buttonColor || '#6366f1',
           color: buttonStyle.textColor || style.buttonTextColor || '#ffffff',
           textAlign: buttonStyle.textAlign || 'center',
         },
-        innerHTML: sanitizeHTML(config.buttonText || 'Shop Now'),
-      });
-      
+        innerHTML: normalizeRemToPx(sanitizeHTML(config.buttonText || 'Shop Now')),
+      };
+
+      var btn;
+      if (config.buttonUrl) {
+        // Clickable CTA (whatsapp / link)
+        btnAttrs.href = config.buttonUrl;
+        btnAttrs.target = '_blank';
+        btnAttrs.rel = 'noopener noreferrer';
+        btn = createElement('a', btnAttrs);
+      } else {
+        // "text" CTA — shown on the card but not clickable
+        btnAttrs.style.cursor = 'default';
+        btn = createElement('span', btnAttrs);
+      }
+
       buttonWrapper.appendChild(btn);
       card.appendChild(buttonWrapper);
     }
