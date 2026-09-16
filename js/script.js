@@ -95,33 +95,7 @@
 			}
 		});
 
-		// Page loader & Page transition
-		if (plugins.preloader.length && !isNoviBuilder) {
-			pageTransition({
-				target: document.querySelector('.page'),
-				delay: 0,
-				duration: 300,
-				classIn: 'fadeIn',
-				classOut: 'fadeOut',
-				classActive: 'animated',
-				conditions: function (event, link) {
-					// Add explicit exclusion for back navigation
-					if (window.performance && performance.navigation.type === 2) {
-						return false;
-					}
-					return link && !/(\#|javascript:void\(0\)|callto:|tel:|mailto:|:\/\/)/.test(link) && !event.currentTarget.hasAttribute('data-lightgallery');
-				},
-				onTransitionStart: function (options) {
-					setTimeout(function () {
-						plugins.preloader.removeClass('loaded');
-					}, options.duration * .75);
-				},
-				onReady: function () {
-					plugins.preloader.addClass('loaded');
-					windowReady = true;
-				}
-			});
-		}
+		// Page loader & Page transition: moved to the document-ready handler below (perf).
 
 		// Isotope
 		if (plugins.isotope.length) {
@@ -240,6 +214,37 @@
 	// Initialize scripts that require a finished document
 	$(function () {
 		isNoviBuilder = window.xMode;
+
+		// Page loader & Page transition
+		// Perf: this used to run on window 'load', so the preloader covered the page until every
+		// image and video had downloaded. Now it runs once the HTML + scripts are ready.
+		// pageTransition calls onReady via setTimeout, so it fires after this handler (slider init etc.) finishes.
+		if (plugins.preloader.length && !isNoviBuilder) {
+			pageTransition({
+				target: document.querySelector('.page'),
+				delay: 0,
+				duration: 300,
+				classIn: 'fadeIn',
+				classOut: 'fadeOut',
+				classActive: 'animated',
+				conditions: function (event, link) {
+					// Add explicit exclusion for back navigation
+					if (window.performance && performance.navigation.type === 2) {
+						return false;
+					}
+					return link && !/(\#|javascript:void\(0\)|callto:|tel:|mailto:|:\/\/)/.test(link) && !event.currentTarget.hasAttribute('data-lightgallery');
+				},
+				onTransitionStart: function (options) {
+					setTimeout(function () {
+						plugins.preloader.removeClass('loaded');
+					}, options.duration * .75);
+				},
+				onReady: function () {
+					plugins.preloader.addClass('loaded');
+					windowReady = true;
+				}
+			});
+		}
 
 		/**
 		 * @desc Toggle swiper videos on active slides
