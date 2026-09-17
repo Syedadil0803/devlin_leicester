@@ -20,6 +20,8 @@
   <link rel="icon" href="images/favicon-100x100.png" type="image/x-icon">
   <!-- Stylesheets-->
   <link rel="preload" href="fonts/roboto-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
+  <!-- Perf: hero photo is set via inline style, which the browser finds late. Preload it. -->
+  <link rel="preload" href="images/bg-breadcrumbs.webp" as="image" type="image/webp" fetchpriority="high">
   <link rel="stylesheet" href="css/local-fonts.css">
   <link rel="stylesheet" href="css/bootstrap.min.css">
   <link rel="stylesheet" href="css/fonts.subset.css">
@@ -244,39 +246,7 @@
         src="images/ie8-panel/warning_bar_0000_us.jpg" height="42" width="820"
         alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today."></a>
   </div>
-  <div class="preloader">
-    <div class="wrapper-triangle">
-      <div class="pen">
-        <div class="line-triangle">
-          <div class="triangle"></div>
-          <div class="triangle"></div>
-          <div class="triangle"></div>
-          <div class="triangle"></div>
-          <div class="triangle"></div>
-          <div class="triangle"></div>
-          <div class="triangle"></div>
-        </div>
-        <div class="line-triangle">
-          <div class="triangle"></div>
-          <div class="triangle"></div>
-          <div class="triangle"></div>
-          <div class="triangle"></div>
-          <div class="triangle"></div>
-          <div class="triangle"></div>
-          <div class="triangle"></div>
-        </div>
-        <div class="line-triangle">
-          <div class="triangle"></div>
-          <div class="triangle"></div>
-          <div class="triangle"></div>
-          <div class="triangle"></div>
-          <div class="triangle"></div>
-          <div class="triangle"></div>
-          <div class="triangle"></div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- Perf: preloader removed so content shows as soon as CSS arrives (no waiting for JS). -->
   <div class="page">
     <!-- Page Header-->
     <header class="section page-header">
@@ -345,6 +315,33 @@
             </div>
           </div>
         </nav>
+        <script>
+          // Perf: header pre-layout.
+          // SAME SCRIPT IN index.html, privacy-policy.html, cookie-policy.html. Keep all three in sync.
+          //
+          // .rd-navbar is display:none in style.css until the menu plugin (js/script.js) adds its layout
+          // class. With no preloader that would flash an empty header, so apply the same class right away,
+          // using the plugin's breakpoints. The plugin takes over once it loads.
+          (function () {
+            var nav = document.querySelector('.rd-navbar');
+            if (!nav) return;
+
+            var isDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            var breakpoints = [[0, '-'], [576, '-sm-'], [768, '-md-'], [992, '-lg-'], [1200, '-xl-'], [1600, '-xxl-']];
+            var layout, deviceLayout;
+
+            for (var i = 0; i < breakpoints.length && window.innerWidth >= breakpoints[i][0]; i++) {
+              layout = nav.getAttribute('data' + breakpoints[i][1] + 'layout') || layout;
+              deviceLayout = nav.getAttribute('data' + breakpoints[i][1] + 'device-layout') || deviceLayout;
+            }
+
+            var layoutClass = (isDevice && deviceLayout) || layout;
+            if (layoutClass) {
+              nav.classList.add(layoutClass);
+              document.documentElement.classList.add(layoutClass + '-linked');
+            }
+          })();
+        </script>
       </div>
     </header>
     <!-- Breadcrumbs -->

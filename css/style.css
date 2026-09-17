@@ -5880,7 +5880,7 @@ p+.quote-classic {
 	position: relative;
 	padding: 50px 0;
 	text-align: center;
-	background-color: #db2a19;
+	background-color: #3a3f44;
 }
 
 .breadcrumbs-custom-title {
@@ -7983,7 +7983,6 @@ hr+.footer-social-list {
 	text-align: center;
 	overflow: hidden;
 	min-height: 100vh;
-	opacity: 0;
 }
 
 .page.fadeIn {

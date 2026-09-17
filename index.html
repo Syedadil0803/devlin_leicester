@@ -2362,39 +2362,7 @@
         height="42" width="820"
         alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today." /></a>
   </div>
-  <div class="preloader">
-    <div class="wrapper-triangle">
-      <div class="pen">
-        <div class="line-triangle">
-          <div class="triangle"></div>
-          <div class="triangle"></div>
-          <div class="triangle"></div>
-          <div class="triangle"></div>
-          <div class="triangle"></div>
-          <div class="triangle"></div>
-          <div class="triangle"></div>
-        </div>
-        <div class="line-triangle">
-          <div class="triangle"></div>
-          <div class="triangle"></div>
-          <div class="triangle"></div>
-          <div class="triangle"></div>
-          <div class="triangle"></div>
-          <div class="triangle"></div>
-          <div class="triangle"></div>
-        </div>
-        <div class="line-triangle">
-          <div class="triangle"></div>
-          <div class="triangle"></div>
-          <div class="triangle"></div>
-          <div class="triangle"></div>
-          <div class="triangle"></div>
-          <div class="triangle"></div>
-          <div class="triangle"></div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- Perf: preloader removed so content shows as soon as CSS arrives (no waiting for JS). -->
   <div class="page" id="top">
     <!-- Page Header and Swiper-->
     <section class="cw-announcement-slot"></section>
@@ -2562,6 +2530,33 @@
               </div>
             </div>
           </nav>
+          <script>
+            // Perf: header pre-layout.
+            // SAME SCRIPT IN index.html, privacy-policy.html, cookie-policy.html. Keep all three in sync.
+            //
+            // .rd-navbar is display:none in style.css until the menu plugin (js/script.js) adds its layout
+            // class. With no preloader that would flash an empty header, so apply the same class right away,
+            // using the plugin's breakpoints. The plugin takes over once it loads.
+            (function () {
+              var nav = document.querySelector('.rd-navbar');
+              if (!nav) return;
+
+              var isDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+              var breakpoints = [[0, '-'], [576, '-sm-'], [768, '-md-'], [992, '-lg-'], [1200, '-xl-'], [1600, '-xxl-']];
+              var layout, deviceLayout;
+
+              for (var i = 0; i < breakpoints.length && window.innerWidth >= breakpoints[i][0]; i++) {
+                layout = nav.getAttribute('data' + breakpoints[i][1] + 'layout') || layout;
+                deviceLayout = nav.getAttribute('data' + breakpoints[i][1] + 'device-layout') || deviceLayout;
+              }
+
+              var layoutClass = (isDevice && deviceLayout) || layout;
+              if (layoutClass) {
+                nav.classList.add(layoutClass);
+                document.documentElement.classList.add(layoutClass + '-linked');
+              }
+            })();
+          </script>
         </div>
       </header>
       <!-- Hero slider utility styles -->
@@ -2572,15 +2567,15 @@
       <div class="swiper-container swiper-slider swiper-slider-7" data-loop="false" data-simulate-touch="false"
         data-add-slides="1">
         <div class="swiper-wrapper text-sm-left">
-          <div class="swiper-slide swiper-slide-bg" data-slide-bg="images/stores/LeicesterStoreImg.webp">
+          <div class="swiper-slide swiper-slide-bg" data-slide-bg="images/stores/LeicesterStoreImg.webp" style="background-image: url(images/stores/LeicesterStoreImg.webp); background-size: cover;">
             <div class="swiper-slide-caption section-md">
               <div class="swiper-box">
                 <h6 class="oh swiper-subtitle">
-                  <span class="d-inline-block" data-caption-animate="slideInDown" data-caption-delay="0">
+                  <span class="d-inline-block">
                     Beautiful Carpets & Flooring for Homes Across Leicestershire.</span>
                 </h6>
                 <h3 class="swiper-title oh">
-                  <span class="d-block" data-caption-animate="slideInLeft" data-caption-delay="0">Your Local Flooring
+                  <span class="d-block">Your Local Flooring
                   </span>
                 </h3>
                 <!-- <a class="button button-xl button-icon button-icon-right button-blue-8" data-caption-animate="fadeInUp"
@@ -2588,7 +2583,6 @@
                 href="https://wa.me/447789383947?text=Hi%20Devlin%20Wholesale%2C%20I%27d%20like%20help%20with%20flooring."><span
                     class="icon mdi mdi-chevron-right"></span>Request A Measure</a> -->
                 <a class="button button-xl button-icon button-blue-8 d-block button-winona button-winona-flex"
-                  data-caption-animate="fadeInUp" data-caption-delay="0"
                   href="https://wa.me/447789383947?text=Hi%20Devlin%20Wholesale%2C%20I%27d%20like%20help%20with%20flooring."
                   aria-label="Call Devlin now" target="_blank">
                   <span class="content-original">
