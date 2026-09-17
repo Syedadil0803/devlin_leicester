@@ -261,7 +261,8 @@
 			}
 
 			videos = nextSlide.find("video");
-			if (videos.length) {
+			// Videos marked data-deferred-autoplay are started by index.html after the first screen is ready.
+			if (videos.length && !videos.get(0).hasAttribute('data-deferred-autoplay')) {
 				videos.get(0).play();
 			}
 		}

@@ -1,4 +1,10 @@
 @charset "UTF-8";
+/* Disable browser swipe back/forward navigation on trackpads */
+html,
+body {
+	overscroll-behavior-x: none;
+}
+
 
 /**
  * [Table of contents]
@@ -13044,9 +13050,10 @@ html.tablet .ui-to-top {
 		display: none;
 	}
 
-	/* Shorter hero height on mobile */
-	.leicester-hero .swiper-slide-bg {
-		height: 55vh;
+	/* Hero text + CTA sit at the bottom of the photo on phones */
+	.leicester-hero .swiper-slide-caption {
+		align-items: flex-end;
+		padding-bottom: 40px;
 	}
 
 	/* Use white text on mobile with gradient overlay */
