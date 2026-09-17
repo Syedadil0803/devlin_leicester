@@ -17,6 +17,8 @@
     <link rel="icon" href="images/favicon-100x100.png" type="image/x-icon">
     <!-- Stylesheets-->
     <link rel="preload" href="fonts/roboto-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
+    <!-- Perf: header logo requested first (top of page). Must match the header <img> srcset/sizes exactly. -->
+    <link rel="preload" as="image" href="images/logo-2-180w.webp" imagesrcset="images/logo-2-180w.webp 180w, images/logo-2-301w.webp 301w" imagesizes="(max-width: 767px) 160px, 180px" type="image/webp" fetchpriority="high">
     <!-- Perf: hero photo is set via inline style, which the browser finds late. Preload it. -->
     <link rel="preload" href="images/bg-breadcrumbs.webp" as="image" type="image/webp" fetchpriority="high">
     <link rel="stylesheet" href="css/local-fonts.css">
@@ -354,9 +356,9 @@
                                     <span></span>
                                 </button>
                                 <!-- RD Navbar Brand-->
-                                <!-- <div class="rd-navbar-brand"><a class="brand" href="./"><img class="brand-logo-dark" src="images/logo-default-360x98.png" alt="image" width="180" height="49"/></a></div> -->
+                                <!-- <div class="rd-navbar-brand"><a class="brand" href="./"><img class="brand-logo-dark" fetchpriority="high" src="images/logo-default-360x98.png" alt="image" width="180" height="49"/></a></div> -->
                                 <div class="rd-navbar-brand">
-                                    <a class="brand" href="./"><img class="brand-logo-dark" src="images/logo-2.png"
+                                    <a class="brand" href="./"><img class="brand-logo-dark" fetchpriority="high" src="images/logo-2-180w.webp" srcset="images/logo-2-180w.webp 180w, images/logo-2-301w.webp 301w" sizes="(max-width: 767px) 160px, 180px"
                                             alt="devlin logo" width="180" height="49" /></a>
                                 </div>
                             </div>
@@ -616,7 +618,7 @@
 
                         <div style="margin-top: 10px; text-align: left; display: inline-block;">
                             <span style="display: block;">Digital Experience by</span>
-                            <img width="940" height="308" decoding="async" fetchpriority="high" src="images/logo/NXoduslogo.webp" alt="Nxodus logo"
+                            <img loading="lazy" width="940" height="308" decoding="async" src="images/logo/NXoduslogo-340w.webp" srcset="images/logo/NXoduslogo-170w.webp 170w, images/logo/NXoduslogo-340w.webp 340w" sizes="170px" alt="Nxodus logo"
                                 style="display: block; width: 170px; max-width: 100%; height: auto; margin-top: 6px;" />
                         </div>
                     </div>
@@ -670,7 +672,7 @@
                             <div class="inset-left-xl-20 wow slideInLeft">
                                 <a class="brand js-silent-anchor" href="#top"
                                     style="background-color: white; display: inline-block; padding: 4px;">
-                                    <img loading="lazy" decoding="async" src="images/logo-2.png" alt="logo image" width="180" height="49"
+                                    <img loading="lazy" decoding="async" src="images/logo-2-180w.webp" srcset="images/logo-2-180w.webp 180w, images/logo-2-301w.webp 301w" sizes="(max-width: 767px) 160px, 180px" alt="logo image" width="180" height="49"
                                         style="background-color: white;" />
                                 </a>
                                 <p>Providing trustworthy flooring products and solutions.</p>
