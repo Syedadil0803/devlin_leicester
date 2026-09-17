@@ -12998,7 +12998,13 @@ html.tablet .ui-to-top {
 
 @media (min-width: 992px) {
 	.leicester-hero .swiper-slide-bg {
-		height: 80vh;
+		height: calc(80vh + 60px);
+	}
+}
+
+@media (min-width: 1600px) {
+	.leicester-hero .swiper-slide-bg {
+		height: calc(80vh + 90px);
 	}
 }
 
