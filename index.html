@@ -3770,6 +3770,31 @@
       transform: translateY(80px) scale(.98);
     }
 
+    /* Reveal end state: the script adds .is-visible on scroll. Without this the steps stay faded + shifted. */
+    .service-step.is-visible .card-lite,
+    .service-step.is-visible .media {
+      animation: slide-top .75s cubic-bezier(.25, .46, .45, .94) both;
+    }
+
+    @keyframes slide-top {
+      0% {
+        opacity: .15;
+        transform: translateY(80px) scale(.98);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @media (max-width: 991.98px) {
+      .service-step.is-visible .card-lite,
+      .service-step.is-visible .media {
+        transform: translateY(0) scale(1);
+      }
+    }
+
     .service-step .timeline-dot {
       color: #101010;
       z-index: 2;
