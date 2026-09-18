@@ -33343,10 +33343,6 @@ html:not(.ie-11):not(.ios) .parallax-disabled {
   transition: all .25s ease-in-out
 }
 
-.slick-quote .child-carousel .slick-slide {
-  pointer-events: none
-}
-
 .slick-quote .child-carousel .slick-current {
   opacity: 1
 }
