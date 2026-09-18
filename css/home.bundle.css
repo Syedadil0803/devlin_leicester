@@ -32930,6 +32930,10 @@ html:not(.ie-11):not(.ios) .parallax-disabled {
   cursor: pointer
 }
 
+.slick-quote .child-carousel .slick-slide {
+  cursor: default
+}
+
 .child-carousel .slick-slide img {
   width: 100%
 }
@@ -33242,9 +33246,8 @@ html:not(.ie-11):not(.ios) .parallax-disabled {
   opacity: .5;
   transition: all .25s ease-in-out
 }
-
-.slick-quote .child-carousel .slick-slide:hover {
-  opacity: 1
+.slick-quote .child-carousel .slick-slide {
+  pointer-events: none
 }
 
 .slick-quote .child-carousel .slick-current {
