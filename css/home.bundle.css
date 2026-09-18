@@ -2731,6 +2731,15 @@ p.rights a:hover {
   margin-top: 20px
 }
 
+.latest-projects-section .thumbnail-modern,
+.latest-projects-section .thumbnail-modern-figure,
+.latest-projects-section .thumbnail-modern-caption,
+.latest-projects-section .thumbnail-modern-caption>*,
+.latest-projects-section .thumbnail-modern-title a,
+.latest-projects-section .thumbnail-modern-badge {
+  cursor: pointer
+}
+
 @media (width <=991.98px) {
   .heading-bottom-30 {
     margin-bottom: 24px
@@ -3494,6 +3503,25 @@ p.rights a:hover {
   text-decoration: underline
 }
 
+.button,
+button,
+a[href],
+[role="button"],
+[data-toggle],
+[data-target],
+[data-lightgallery],
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+.rd-navbar-toggle,
+.rd-navbar-submenu-toggle,
+.swiper-button-prev,
+.swiper-button-next,
+.swiper-pagination-bullet,
+.slick-arrow {
+  cursor: pointer
+}
+
 .embed-privacy-note {
   text-align: center
 }
@@ -3971,6 +3999,54 @@ p.rights a:hover {
 #matterportConsent .cmc-btn:hover {
   background: #b9220f;
   transform: translateY(-1px)
+}
+
+@media (width <=575.98px) {
+
+  #coverageMapConsent,
+  #matterportConsent {
+    padding: 14px
+  }
+
+  #coverageMapConsent .cmc-pin,
+  #matterportConsent .cmc-pin {
+    width: 38px;
+    height: 38px;
+    margin-bottom: 8px
+  }
+
+  #coverageMapConsent .cmc-title,
+  #matterportConsent .cmc-title {
+    letter-spacing: .06em;
+    margin-bottom: 6px;
+    font-size: 17px;
+    line-height: 1.25
+  }
+
+  #coverageMapConsent .cmc-note,
+  #matterportConsent .cmc-note {
+    max-width: 300px;
+    margin-bottom: 12px;
+    font-size: 12px;
+    line-height: 1.45
+  }
+
+  #coverageMapConsent .cmc-btn,
+  #matterportConsent .cmc-btn {
+    letter-spacing: .12em;
+    max-width: 100%;
+    padding: 10px 22px;
+    font-size: 12px;
+    line-height: 1.5;
+    white-space: normal
+  }
+
+  .cmc-consent-notice {
+    max-width: 300px;
+    margin-top: 10px;
+    font-size: 11px;
+    line-height: 1.4
+  }
 }
 
 .fa-solid {
@@ -33266,6 +33342,7 @@ html:not(.ie-11):not(.ios) .parallax-disabled {
   opacity: .5;
   transition: all .25s ease-in-out
 }
+
 .slick-quote .child-carousel .slick-slide {
   pointer-events: none
 }

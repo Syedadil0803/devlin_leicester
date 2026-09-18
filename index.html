@@ -2260,7 +2260,7 @@
     }
   </style>
   <!-- Step 3 stylesheet: download starts now; it is applied after the Stage 3 inline block (end of first screen) -->
-  <link rel="preload" href="css/home.bundle.css?v=20260919-5" as="style">
+  <link rel="preload" href="css/home.bundle.css?v=20260919-6" as="style">
   <!-- Accordian footer — deferred, only needed below the fold -->
 
   <!-- Organization Schema -->
@@ -5073,10 +5073,10 @@
       }
     </style>
     <!-- All homepage styles (one file, so they apply in one step). Must come AFTER the three inline stages. -->
-    <link rel="preload" href="css/home.bundle.css?v=20260919-5" as="style"
+    <link rel="preload" href="css/home.bundle.css?v=20260919-6" as="style"
       onload="this.onload=null;this.rel='stylesheet'">
     <noscript>
-      <link rel="stylesheet" href="css/home.bundle.css?v=20260919-5">
+      <link rel="stylesheet" href="css/home.bundle.css?v=20260919-6">
     </noscript>
     <section class="section section-md section-top-0 section-bottom-0">
       <div class="service-journey-heading section-top-0 pt-4 pt-lg-0">
@@ -5719,7 +5719,7 @@
                   <img width="1200" height="1200" loading="lazy" src="GrobyProjects/Project-1/thumbs/Project1_C3.webp"
                     alt="96 Snake Hill Rd" style="width: 100%; height: auto; object-fit: cover;" />
                 </a>
-                <div class="thumbnail-modern-caption">
+                <div class="thumbnail-modern-caption" data-toggle="modal" data-target="#project1Modal" role="button" tabindex="0">
                   <h5 class="thumbnail-modern-title">
                     <a>Executive Environments</a>
                   </h5>
@@ -5740,7 +5740,7 @@
                   <img width="736" height="736" loading="lazy" src="GrobyProjects/Project-2/thumbs/Project2_M1.webp"
                     alt="77 Ashley St" style="width: 100%; height: auto; object-fit: cover;" />
                 </a>
-                <div class="thumbnail-modern-caption">
+                <div class="thumbnail-modern-caption" data-toggle="modal" data-target="#project2Modal" role="button" tabindex="0">
                   <h5 class="thumbnail-modern-title">
                     <a>The Modern Hardwood Look</a>
                   </h5>
@@ -5762,7 +5762,7 @@
                     src="GrobyProjects/Project-4/thumbs/Project1_Staircase6.webp" alt="598 Tallwood Dr"
                     style="width: 100%; height: auto; object-fit: cover;" />
                 </a>
-                <div class="thumbnail-modern-caption">
+                <div class="thumbnail-modern-caption" data-toggle="modal" data-target="#project3Modal" role="button" tabindex="0">
                   <h5 class="thumbnail-modern-title">
                     <a>Statement Steps</a>
                   </h5>
@@ -5783,7 +5783,7 @@
                     src="GrobyProjects/Project-5/thumbs/Project5_Bare Timber Oak.webp" alt="598 Tallwood Dr"
                     style="width: 100%; height: auto; object-fit: cover;" />
                 </a>
-                <div class="thumbnail-modern-caption">
+                <div class="thumbnail-modern-caption" data-toggle="modal" data-target="#project4Modal" role="button" tabindex="0">
                   <h5 class="thumbnail-modern-title">
                     <a>Signature Home Tour</a>
                   </h5>
@@ -5803,7 +5803,7 @@
                   <img width="960" height="960" loading="lazy" src="GrobyProjects/Project-6/thumbs/Project6_AG1.webp"
                     alt="598 Tallwood Dr" style="width: 100%; height: auto; object-fit: cover;" />
                 </a>
-                <div class="thumbnail-modern-caption">
+                <div class="thumbnail-modern-caption" data-toggle="modal" data-target="#project5Modal" role="button" tabindex="0">
                   <h5 class="thumbnail-modern-title">
                     <a>Forever Green</a>
                   </h5>
@@ -5824,7 +5824,7 @@
                     src="GrobyProjects/Project-7/thumbs/Project7_Carpet4.webp" alt="598 Tallwood Dr"
                     style="width: 100%; height: auto; object-fit: cover;" />
                 </a>
-                <div class="thumbnail-modern-caption">
+                <div class="thumbnail-modern-caption" data-toggle="modal" data-target="#project6Modal" role="button" tabindex="0">
                   <h5 class="thumbnail-modern-title">
                     <a>The Comfort Collection</a>
                   </h5>
@@ -6897,6 +6897,15 @@
   <!-- Initialize LightGallery for each project -->
   <script>
     document.addEventListener('DOMContentLoaded', function () {
+      document.querySelectorAll('.latest-projects-section .thumbnail-modern-caption').forEach(function (caption) {
+        caption.addEventListener('keydown', function (event) {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            caption.click();
+          }
+        });
+      });
+
       // Initialize modals
       $('.modal').on('shown.bs.modal', function (e) {
         // Initialize lightGallery for the project that was opened
