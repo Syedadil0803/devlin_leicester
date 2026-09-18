@@ -1247,10 +1247,6 @@
       pointer-events: auto
     }
 
-    .video-expanded-overlay.active .video-spinner {
-      opacity: 1
-    }
-
     .video-expanded-overlay.loading .video-spinner {
       opacity: 1
     }
@@ -3978,7 +3974,7 @@
         overlay.style.setProperty('--reveal-start', startRadius + 'px');
         overlay.style.setProperty('--reveal-end', endRadius + 'px');
 
-        overlay.classList.add('active', 'loading');
+        overlay.classList.add('active','loading');
         closeBtn.classList.add('active');
 
         // Reset video to ensure clean playback
