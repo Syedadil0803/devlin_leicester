@@ -1204,7 +1204,8 @@
     .video-expanded-overlay video {
       object-fit: contain;
       width: 100%;
-      height: 100%
+      height: 100%;
+      z-index: 1;
     }
 
     .video-expanded-overlay .video-spinner {
@@ -1230,6 +1231,30 @@
       transition: -webkit-clip-path .72s cubic-bezier(.22, 1, .36, 1), clip-path .72s cubic-bezier(.22, 1, .36, 1), opacity .72s cubic-bezier(.22, 1, .36, 1)
     }
 
+    #storeVideoOverlay.active {
+      clip-path: circle(var(--reveal-end, 100vmax) at var(--reveal-x, 100%) var(--reveal-y, 0%));
+      -webkit-clip-path: circle(var(--reveal-end, 100vmax) at var(--reveal-x, 100%) var(--reveal-y, 0%))
+    }
+
+    #heroVideoOverlay {
+      clip-path: none;
+      -webkit-clip-path: none;
+      transition: opacity .5s ease;
+    }
+
+    .video-expanded-overlay.active {
+      opacity: 1;
+      pointer-events: auto
+    }
+
+    .video-expanded-overlay.active .video-spinner {
+      opacity: 1
+    }
+
+    .video-expanded-overlay.loading .video-spinner {
+      opacity: 1
+    }
+
     .video-close-btn {
       z-index: 10000;
       cursor: pointer;
@@ -1240,6 +1265,10 @@
       position: fixed;
       top: 20px;
       right: 20px
+    }
+
+    .video-close-btn.active {
+      display: flex
     }
 
     .video-close-circle {
@@ -3916,7 +3945,7 @@
         </div>
         <div class="video-close-label">Close<br>Video</div>
       </div>
-      <video id="storeExpandedVideo" loop playsinline preload="none" muted>
+      <video id="storeExpandedVideo" loop playsinline preload="metadata" muted>
         <source src="videos/LeicesterStoreVideo.mp4" type="video/mp4">
       </video>
     </div>
@@ -3951,12 +3980,56 @@
 
         overlay.classList.add('active', 'loading');
         closeBtn.classList.add('active');
+
+        // Reset video to ensure clean playback
+        video.currentTime = 0;
         video.muted = true;
-        video.addEventListener('playing', function onPlay() {
+
+        // Ensure video is loaded before attempting playback
+        if (video.readyState === 0) {
+          video.load();
+        }
+
+        // Handler for when video starts playing
+        var onPlay = function onPlay() {
           overlay.classList.remove('loading');
           video.removeEventListener('playing', onPlay);
-        });
-        video.play().catch(function () { });
+        };
+
+        // Fallback timeout if playing event doesn't fire
+        var timeoutId = setTimeout(function () {
+          if (overlay.classList.contains('loading')) {
+            console.warn('Store video playback timeout - removing loading spinner');
+            overlay.classList.remove('loading');
+          }
+        }, 3000);
+
+        // Clean up timeout when playing event fires
+        var onPlayWrapped = function () {
+          clearTimeout(timeoutId);
+          onPlay();
+        };
+
+        video.addEventListener('playing', onPlayWrapped);
+
+        // Attempt to play with proper error handling
+        var playPromise = video.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(function (error) {
+            console.error('Store video playback error:', error);
+            clearTimeout(timeoutId);
+            overlay.classList.remove('loading');
+            video.removeEventListener('playing', onPlayWrapped);
+
+            // Retry: force load and play
+            video.load();
+            setTimeout(function () {
+              video.play().catch(function (retryErr) {
+                console.error('Store video failed to play after retry:', retryErr);
+              });
+            }, 500);
+          });
+        }
       }
       function closeLeicesterStoreVideo() {
         var overlay = document.getElementById('storeVideoOverlay');
@@ -5036,7 +5109,8 @@
               <img src="images/stores/LeicesterParking.webp" alt="Leicester showroom interior" width="1200" height="800"
                 loading="lazy" decoding="async" draggable="false">
               <div class="grid-left-overlay">
-                <button type="button" class="play-button-video play-button-pulse" aria-label="Play founder video">
+                <button type="button" class="play-button-video play-button-pulse" aria-label="Play founder video"
+                  onclick="openHeroVideo()">
                   <video class="play-button-video-preview" muted loop playsinline preload="none"
                     data-deferred-autoplay="visible">
                     <source src="videos/michael-preview.mp4" type="video/mp4">
@@ -5150,7 +5224,7 @@
         </div>
         <div class="video-close-label">Close<br>Video</div>
       </div>
-      <video id="heroExpandedVideo" loop playsinline preload="none" controls muted>
+      <video id="heroExpandedVideo" loop playsinline preload="metadata" muted>
         <source src="videos/michael.mp4" type="video/mp4">
       </video>
     </div>
@@ -5160,7 +5234,9 @@
         document.getElementById('heroVideoCloseBtn').classList.add('active');
         var heroVideo = document.getElementById('heroExpandedVideo');
         heroVideo.muted = true;
-        heroVideo.play();
+        heroVideo.play().catch(function (err) {
+          console.error('Hero video play error:', err);
+        });
       }
 
       function closeHeroVideo() {
@@ -5170,6 +5246,20 @@
         heroVideo.pause();
         heroVideo.currentTime = 0;
       }
+
+      // Close video on ESC key
+      document.addEventListener('keydown', function (event) {
+        if (event.key === 'Escape') {
+          var overlay = document.getElementById('heroVideoOverlay');
+          if (overlay && overlay.classList.contains('active')) {
+            closeHeroVideo();
+          }
+          var storeOverlay = document.getElementById('storeVideoOverlay');
+          if (storeOverlay && storeOverlay.classList.contains('active')) {
+            closeLeicesterStoreVideo();
+          }
+        }
+      });
     </script>
     <!-- Icon Classic-->
     <section class="section section-top-0 section-bottom-0 bg-default icon-classic-grid" style="margin: 20px 0;">
