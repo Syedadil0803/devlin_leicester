@@ -103,6 +103,7 @@ stage. **Do not hand-edit them** — see §7.
 
 | Rule | Purpose |
 |---|---|
+| **Step 1 colour block** (the first rules inside `<style data-critical>`): `html, body { background-color:#fff }`, `.rd-navbar { background-color:#fff }`, `.leicester-hero .swiper-slide-bg { background-color:#3a3f44 }` | The requirement's "main background colour" as its own explicit Step 1 item. Page and header colours are the values from `css/style.css`; the hero gets a dark grey placeholder (the same grey used for the policy-page banners) that shows only until the hero photo covers it. The first paint is therefore never a blank screen. A colour cannot be "preloaded" like a file; putting it first in the inline CSS is the equivalent |
 | `.leicester-hero .swiper-slide-caption, .leicester-hero .leicester-hero-video-bubble-wrap, .why-devlin-wa-rail .why-devlin-whatsapp { opacity:0; transition:opacity .25s }` | Hide hero text, video bubble and WhatsApp tab until the reveal script says so |
 | `.hero-ready .leicester-hero .swiper-slide-caption { opacity:1 }` | Show hero text when the photo has loaded |
 | `.bubble-ready .leicester-hero .leicester-hero-video-bubble-wrap, .bubble-ready .why-devlin-wa-rail .why-devlin-whatsapp { opacity:1 }` | Show bubble + WhatsApp tab 0.4 s after the text |
@@ -153,9 +154,16 @@ and video had finished. About 2 s of spinner on a phone.
 **Now:** the preloader block is deleted from all three pages. The `opacity: 0` on `.page` in `css/style.css` was also
 removed; the preloader script was the only thing that faded `.page` in, so without that removal every page stayed blank.
 
-### 5.2 Header visible immediately
+### 5.2 Step 1 exactly: header CSS, brand logo, main background colour
 
-See the header pre-layout script (4.1). The header, logo and social icons are all in the first paint.
+| Step 1 item | How it is delivered | Network request needed? |
+|---|---|---|
+| Main background colour | The **Step 1 colour block**, first rules in `<style data-critical>` (4.3) | No |
+| Header CSS | The rest of `<style data-critical>` in `<head>` + the header pre-layout script (4.1) | No |
+| Brand logo | Base64 inside the header `<img>` (4.4) | No |
+| Header social icons, nav font | Embedded fonts (4.4) | No |
+
+Everything Step 1 needs arrives inside the HTML itself, so the header is drawn in the first paint.
 
 ### 5.3 Hero photo early and small
 

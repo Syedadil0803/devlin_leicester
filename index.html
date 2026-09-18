@@ -49,6 +49,22 @@
   </script>
 
   <style data-critical="">
+    /* STEP 1 — main background colours. First rules the browser applies, so the very first paint is never a blank
+       white/transparent screen. Values match css/style.css (page + header = #fff). The hero gets a dark placeholder
+       (same grey as the policy-page banners) until its photo arrives, so the header sits on a solid colour instantly. */
+    html,
+    body {
+      background-color: #fff;
+    }
+
+    .rd-navbar {
+      background-color: #fff;
+    }
+
+    .leicester-hero .swiper-slide-bg {
+      background-color: #3a3f44;
+    }
+
     /* Stage 1: page base + header. Generated from the real stylesheets; do not hand-edit. */
     @font-face {
       font-family: Roboto;
