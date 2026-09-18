@@ -241,6 +241,17 @@
     .rd-navbar-static .rd-navbar-nav .rd-nav-item:last-child {
       margin-left: auto !important;
     }
+
+    @media (width >=768px) {
+      a.phone[href^="tel"] {
+        pointer-events: none;
+        cursor: default
+      }
+
+      a[href^="tel"].button {
+        cursor: default
+      }
+    }
   </style>
 </head>
 
@@ -842,6 +853,14 @@
   </script>
   <!-- Javascript-->
   <script src="js/vendor/bootstrap-5.3.0.bundle.min.js"></script>
+  <!-- Phone link behavior: prevent default on desktop (>= 768px), allow on mobile -->
+  <script>
+    document.querySelectorAll('a[href^="tel"]').forEach(function (el) {
+      el.addEventListener('click', function (e) {
+        if (window.innerWidth >= 768) e.preventDefault();
+      });
+    });
+  </script>
   <!-- Nav external-link tooltip (shared, fixed-position so the header's overflow:hidden can't clip it) -->
   <script src="js/nav-tooltip.js?v=20260918"></script>
   <script src="js/cookie-consent.js?v=20260918"></script>
