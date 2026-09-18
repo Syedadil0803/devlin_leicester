@@ -5517,8 +5517,7 @@
                 style="display: none">
                 Enable Map Interaction
               </button>
-              <div id="coverageMapConsent" onclick="loadCoverageMap()" role="button" tabindex="0"
-                aria-label="Load the coverage map">
+              <div id="coverageMapConsent">
                 <svg class="cmc-pin" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                   <path
                     d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z" />
@@ -5528,7 +5527,8 @@
                   The map is provided by Google Maps and may set its own cookies. We don't load it
                   &mdash; or send anything to Google &mdash; until you choose to.
                 </div>
-                <span class="cmc-btn">Load interactive map</span>
+                <span class="cmc-btn" onclick="loadCoverageMap()" role="button" tabindex="0" aria-label="Load the coverage map">Load interactive map</span>
+                <div class="cmc-consent-notice">By clicking above, you consent to Google's cookies and data processing under <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google Privacy Policy</a>.</div>
               </div>
             </div>
           </div>
@@ -5681,8 +5681,7 @@
                 frameborder="0" allowfullscreen loading="lazy"
                 allow="autoplay; fullscreen; web-share; xr-spatial-tracking;"
                 style="position: absolute; inset: 0; width: 100%; height: 100%; border: 0;"></iframe>
-              <div id="matterportConsent" onclick="loadMatterport()" role="button" tabindex="0"
-                aria-label="Load the virtual showroom tour">
+              <div id="matterportConsent">
                 <!-- 3D cube / tour icon -->
                 <svg class="cmc-pin" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                   <path
@@ -5693,7 +5692,8 @@
                   This 3D tour is provided by Matterport and may set its own cookies. We don't load it
                   &mdash; or contact Matterport &mdash; until you choose to.
                 </div>
-                <span class="cmc-btn">Launch 3D Tour</span>
+                <span class="cmc-btn" onclick="loadMatterport()" role="button" tabindex="0" aria-label="Load the virtual showroom tour">Launch 3D Tour</span>
+                <div class="cmc-consent-notice">By clicking above, you consent to Matterport's cookies and data processing under <a href="https://www.costar.com/about/privacy-notice" target="_blank" rel="noopener noreferrer">Matterport Privacy Policy</a>.</div>
               </div>
             </div>
           </div>
