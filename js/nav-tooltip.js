@@ -25,7 +25,7 @@
       "transform:translateX(-50%);border:6px solid transparent;",
       "border-bottom-color:rgba(21,21,21,.75);}"
     ].join("");
-    document.head.appendChild(style);
+    (document.body || document.head).appendChild(style); // after all stylesheets, so these styles still win
   }
 
   var tip;

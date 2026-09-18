@@ -18,7 +18,8 @@
     <!-- Stylesheets-->
     <link rel="preload" href="fonts/roboto-latin-variable.woff2" as="font" type="font/woff2" crossorigin>
     <!-- Perf: header logo requested first. Keep imagesrcset identical to the header <img> srcset. -->
-    <link rel="preload" as="image" href="images/logo-2-180w.webp" imagesrcset="images/logo-2-180w.webp 1x, images/logo-2-301w.webp 2x" type="image/webp" fetchpriority="high">
+    <link rel="preload" as="image" href="images/logo-2-180w.webp"
+        imagesrcset="images/logo-2-180w.webp 1x, images/logo-2-301w.webp 2x" type="image/webp" fetchpriority="high">
     <!-- Perf: hero photo is set via inline style, which the browser finds late. Preload it. -->
     <link rel="preload" href="images/bg-breadcrumbs.webp" as="image" type="image/webp" fetchpriority="high">
     <link rel="stylesheet" href="css/local-fonts.css">
@@ -358,7 +359,9 @@
                                 <!-- RD Navbar Brand-->
                                 <!-- <div class="rd-navbar-brand"><a class="brand" href="./"><img class="brand-logo-dark" src="images/logo-default-360x98.png" alt="image" width="180" height="49"/></a></div> -->
                                 <div class="rd-navbar-brand">
-                                    <a class="brand" href="./"><img fetchpriority="high" class="brand-logo-dark" src="images/logo-2-180w.webp" srcset="images/logo-2-180w.webp 1x, images/logo-2-301w.webp 2x"
+                                    <a class="brand" href="./"><img fetchpriority="high" class="brand-logo-dark"
+                                            src="images/logo-2-180w.webp"
+                                            srcset="images/logo-2-180w.webp 1x, images/logo-2-301w.webp 2x"
                                             alt="devlin logo" width="180" height="49" /></a>
                                 </div>
                             </div>
@@ -618,7 +621,8 @@
 
                         <div style="margin-top: 10px; text-align: left; display: inline-block;">
                             <span style="display: block;">Digital Experience by</span>
-                            <img width="940" height="308" decoding="async" fetchpriority="high" src="images/logo/NXoduslogo.webp" alt="Nxodus logo"
+                            <img width="940" height="308" decoding="async" fetchpriority="high"
+                                src="images/logo/NXoduslogo.webp" alt="Nxodus logo"
                                 style="display: block; width: 170px; max-width: 100%; height: auto; margin-top: 6px;" />
                         </div>
                     </div>
@@ -672,8 +676,9 @@
                             <div class="inset-left-xl-20 wow slideInLeft">
                                 <a class="brand js-silent-anchor" href="#top"
                                     style="background-color: white; display: inline-block; padding: 4px;">
-                                    <img loading="lazy" decoding="async" src="images/logo-2-180w.webp" srcset="images/logo-2-180w.webp 1x, images/logo-2-301w.webp 2x" alt="logo image" width="180" height="49"
-                                        style="background-color: white;" />
+                                    <img loading="lazy" decoding="async" src="images/logo-2-180w.webp"
+                                        srcset="images/logo-2-180w.webp 1x, images/logo-2-301w.webp 2x" alt="logo image"
+                                        width="180" height="49" style="background-color: white;" />
                                 </a>
                                 <p>Providing trustworthy flooring products and solutions.</p>
                                 <!-- Rights-->
@@ -726,8 +731,8 @@
     <!-- Javascript-->
     <script src="js/vendor/bootstrap-5.3.0.bundle.min.js"></script>
     <!-- Nav external-link tooltip (shared, fixed-position so the header's overflow:hidden can't clip it) -->
-    <script src="js/nav-tooltip.js"></script>
-    <script src="js/cookie-consent.js"></script>
+    <script src="js/nav-tooltip.js?v=20260918"></script>
+    <script src="js/cookie-consent.js?v=20260918"></script>
 </body>
 
 </html>
