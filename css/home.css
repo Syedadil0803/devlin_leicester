@@ -3475,6 +3475,26 @@ p.rights a:hover {
   background: #fff
 }
 
+.coverage-map-privacy-note,
+.embed-privacy-note {
+  color: #6f6f6f;
+  text-align: left;
+  width: 100%;
+  margin: 8px 0 0;
+  font-size: 13px;
+  line-height: 1.5
+}
+
+.coverage-map-privacy-note a,
+.embed-privacy-note a {
+  color: inherit;
+  text-decoration: underline
+}
+
+.embed-privacy-note {
+  text-align: center
+}
+
 .review-badge-link {
   line-height: inherit;
   vertical-align: -.12em;
