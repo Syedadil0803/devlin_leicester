@@ -10004,6 +10004,10 @@ a.close.disabled {
   .modal-xl {
     max-width: 1140px
   }
+
+  .modal-xxl {
+    max-width: 1400px
+  }
 }
 
 .tooltip {
