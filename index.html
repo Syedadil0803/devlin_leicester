@@ -23,7 +23,7 @@
   <meta name="twitter:image" content="https://devlinleicesterlvtflooring.co.uk/images/logo-2.png" />
   <meta name="format-detection" content="telephone=no" />
   <meta name="viewport"
-    content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=5.0" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <link rel="icon" href="images/favicon-100x100.png" type="image/x-icon" />
   <link rel="canonical" href="https://devlinleicesterlvtflooring.co.uk/" />
@@ -487,7 +487,8 @@
 
     a:focus,
     button:focus {
-      outline: 0 !important
+      outline: 2px solid #0056b3;
+      outline-offset: 2px
     }
 
     button::-moz-focus-inner {
@@ -1035,6 +1036,7 @@
       writing-mode: vertical-rl;
       letter-spacing: .02em;
       background: #25d366;
+      color: #fff;
       border-radius: 12px 0 0 12px;
       justify-content: center;
       align-items: center;
@@ -1533,7 +1535,8 @@
 
     a:focus,
     button:focus {
-      outline: 0 !important
+      outline: 2px solid #0056b3;
+      outline-offset: 2px
     }
 
     button::-moz-focus-inner {
@@ -2526,8 +2529,7 @@
         alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today." /></a>
   </div>
   <!-- Perf: preloader removed so content shows as soon as CSS arrives (no waiting for JS). -->
-  <div class="page" id="top">
-    <!-- Page Header and Swiper-->
+  <main class="page" id="top">
     <section class="cw-announcement-slot"></section>
 
     <!-- Mobile-only welcome topbar (shown once per session on mobile) -->
@@ -2644,11 +2646,11 @@
                     <li>
                       <a class="icon-header mdi mdi-facebook"
                         href="https://www.facebook.com/profile.php?id=61567176396456" target="_blank"
-                        rel="noopener noreferrer"></a>
+                        rel="noopener noreferrer" aria-label="Follow Devlin on Facebook"></a>
                     </li>
                     <li>
                       <a class="icon-header mdi mdi-instagram" href="https://www.instagram.com/devlinleicester/"
-                        target="_blank" rel="noopener noreferrer"></a>
+                        target="_blank" rel="noopener noreferrer" aria-label="Follow Devlin on Instagram"></a>
                     </li>
                     <!-- <li><a class="icon-header mdi mdi-google-plus" href="#"></a></li> -->
                   </ul>
@@ -5505,6 +5507,7 @@
               style="position: relative; overflow: hidden; width: 100%; min-height: clamp(320px, 48vw, 520px); height: 100%;">
               <!-- GDPR: map held in data-src, not loaded until the visitor clicks. -->
               <iframe id="coverageMapIframe"
+                title="Coverage map showing Devlin Wholesale service areas"
                 data-src="https://www.google.com/maps/d/embed?mid=1lp2VFv0eqXhxW_qIlQB0TCgEJOygnEI&ehbc=2E312F&noprof=1"
                 style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; pointer-events: none;"
                 frameborder="0" allowfullscreen loading="lazy"></iframe>
@@ -5594,7 +5597,7 @@
 
             <a class="review-badge-link"
               href="https://www.google.com/search?hl=en-GB&gl=uk&q=Devlin+Wholesale+Carpets+Leicester&ludocid=13385023826316567440#lrd=0x0:0xba6dfaf169292390,1"
-              target="_blank" rel="noopener noreferrer">
+              target="_blank" rel="noopener noreferrer" aria-label="Read customer reviews on Google">
               <svg class="review-google-icon" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100"
                 height="100" viewBox="0 0 48 48" aria-hidden="true">
                 <path fill="#FFC107"
@@ -6722,9 +6725,9 @@
             <hr />
             <ul class="list-inline footer-social-list footer-social-list-2">
               <li><a class="icon mdi mdi-facebook" href="https://www.facebook.com/profile.php?id=61567176396456"
-                  target="_blank" rel="noopener noreferrer"></a></li>
+                  target="_blank" rel="noopener noreferrer" aria-label="Follow Devlin on Facebook"></a></li>
               <li><a class="icon mdi mdi-instagram" rel="noopener noreferrer"
-                  href="https://www.instagram.com/devlinleicester/" target="_blank"></a></li>
+                  href="https://www.instagram.com/devlinleicester/" target="_blank" aria-label="Follow Devlin on Instagram"></a></li>
             </ul>
 
             <!-- <div style="margin-top: 10px; text-align: left; display: inline-block;">
@@ -6802,7 +6805,7 @@
         </div>
       </div>
     </footer>
-  </div>
+  </main>
   <!-- Global Mailform Output-->
   <!-- <div class="snackbars" id="form-output-global"></div> -->
 

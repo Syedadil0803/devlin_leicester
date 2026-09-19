@@ -22,14 +22,15 @@ body {
 */
 a:focus,
 button:focus {
-	outline: none !important;
+	outline: 2px solid #0056b3;
+	outline-offset: 2px;
 }
 
 button::-moz-focus-inner {
 	border: 0;
 }
 
-*:focus {
+*:focus:not(button):not(a):not(input):not(select):not(textarea) {
 	outline: none;
 }
 
@@ -38,11 +39,17 @@ blockquote {
 	margin: 0;
 }
 
-input,
-button,
-select,
-textarea {
-	outline: none;
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 2px solid #0056b3;
+	outline-offset: 2px;
+}
+
+/* Original rule only applies to slick carousel and similar non-semantic buttons */
+button:not(.btn):not([type="button"]):focus {
+	outline: 2px solid #0056b3;
+	outline-offset: 2px;
 }
 
 label {

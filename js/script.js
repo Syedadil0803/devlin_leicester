@@ -961,6 +961,13 @@
 				easingType: 'easeOutQuad',
 				containerClass: 'ui-to-top mdi mdi-arrow-up'
 			});
+			
+			// Add aria-label for accessibility
+			var uiToTopBtn = document.querySelector('.ui-to-top');
+			if (uiToTopBtn) {
+				uiToTopBtn.setAttribute('aria-label', 'Back to top');
+				uiToTopBtn.setAttribute('role', 'button');
+			}
 		}
 
 		// RD Navbar
