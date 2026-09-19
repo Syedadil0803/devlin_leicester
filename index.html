@@ -3974,7 +3974,7 @@
         overlay.style.setProperty('--reveal-start', startRadius + 'px');
         overlay.style.setProperty('--reveal-end', endRadius + 'px');
 
-        overlay.classList.add('active','loading');
+        overlay.classList.add('active', 'loading');
         closeBtn.classList.add('active');
 
         // Reset video to ensure clean playback
@@ -5677,11 +5677,6 @@
         <div class="row">
           <div class="col-12">
             <div class="map-container" style="position: relative;">
-              <!-- GDPR: Matterport held in data-src, nothing loaded until visitor clicks -->
-              <iframe id="matterportIframe" data-src="https://my.matterport.com/show/?m=hkLjQnC7Rv2&play=1"
-                frameborder="0" allowfullscreen loading="lazy"
-                allow="autoplay; fullscreen; web-share; xr-spatial-tracking;"
-                style="position: absolute; inset: 0; width: 100%; height: 100%; border: 0;"></iframe>
               <div id="matterportConsent">
                 <!-- 3D cube / tour icon -->
                 <svg class="cmc-pin" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -5690,11 +5685,10 @@
                 </svg>
                 <div class="cmc-title">Explore Our Showroom Virtually</div>
                 <div class="cmc-note">
-
                   This tour is provided by Matterport. Loading it sends data to Matterport and allows them to set
                   cookies on your browser.
                 </div>
-                <span class="cmc-btn" onclick="loadMatterport()" role="button" tabindex="0"
+                <span class="cmc-btn" data-toggle="modal" data-target="#matterportModal" role="button" tabindex="0"
                   aria-label="Load the virtual showroom tour">Launch 3D Tour</span>
                 <div class="cmc-consent-notice">By clicking above, you consent to Matterport's cookies and data
                   processing under <a href="https://www.costar.com/about/privacy-notice" target="_blank"
@@ -6237,6 +6231,30 @@
               </div>
             </div>
 
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Matterport 3D Tour Modal -->
+      <div class="modal fade" id="matterportModal" tabindex="-1" role="dialog" aria-labelledby="matterportModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-fullscreen-lg-down modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="matterportModalLabel">3D Virtual Tour</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" style="padding: 0; overflow: hidden;">
+              <iframe id="matterportIframeModal" src="https://my.matterport.com/show/?m=hkLjQnC7Rv2&play=1"
+                style="width: 100%; height: 500px; border: 0;" frameborder="0" allowfullscreen loading="lazy"
+                allow="autoplay; fullscreen; web-share; xr-spatial-tracking;">
+              </iframe>
+            </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
@@ -6881,12 +6899,7 @@
     }
 
     function loadMatterport() {
-      var iframe = document.getElementById('matterportIframe');
-      var consent = document.getElementById('matterportConsent');
-      if (iframe && iframe.dataset.src && !iframe.getAttribute('src')) {
-        iframe.setAttribute('src', iframe.dataset.src);
-      }
-      if (consent) consent.style.display = 'none';
+      // Matterport now loads in modal only
     }
 
     function toggleCoverageMapInteraction() {
